@@ -1,0 +1,93 @@
+
+#   Copyright (c) 2022 Asif Arman Rahman
+#   Licensed under MIT (https://github.com/AsifArmanRahman/firebase/blob/main/LICENSE)
+
+# --------------------------------------------------------------------------------------
+
+
+[build-system]
+requires = ['flit_core >=3.2,<4']
+build-backend = 'flit_core.buildapi'
+
+
+[project]
+
+# Define the library name, this is what is used along with `pip install`.
+name = 'firebase-rest-api'
+
+# Here is a small description of the library. This appears
+# when someone searches for the library on https://pypi.org/search.
+description = "A simple python wrapper for Google's Firebase REST API's."
+
+# I have a long description but that will just be my README
+# file of `markdown` type
+readme = 'README.md'
+
+# Here I can specify the python version necessary to run this library.
+requires-python = '>=3.6'
+
+# Define the Author's name and email.
+authors = [
+	{ name = 'Asif Arman Rahman', email = 'AsifArmanRahman@gmail.com' },
+]
+
+# Here are the keywords of my library.
+keywords = [
+	'firebase',
+	'firebase-auth',
+	'firebase-database',
+	'firebase-realtime-database',
+	'firebase-storage',
+]
+
+# Additional classifiers that give some characteristics about the package.
+# For a complete list go to https://pypi.org/classifiers/.
+classifiers = [
+
+	# My Intended audience is mostly those who understand finance.
+	'Intended Audience :: Developers',
+
+	# Here I'll define the license that guides my library.
+	'License :: OSI Approved :: MIT License',
+
+	# Here I'll note that package was written in English.
+	'Natural Language :: English',
+
+	# Here I'll note that any operating system can use it.
+	'Operating System :: OS Independent',
+
+	# Here I'll specify the version of Python it uses.
+	'Programming Language :: Python',
+	'Programming Language :: Python :: 3',
+	'Programming Language :: Python :: 3.6',
+	'Programming Language :: Python :: 3.7',
+	'Programming Language :: Python :: 3.8',
+	'Programming Language :: Python :: 3.9',
+	'Programming Language :: Python :: 3.10',
+
+	# Here are the topics that my library covers.
+	'Topic :: Software Development :: Libraries :: Python Modules',
+]
+dynamic = [
+	# Define the version of this library.
+	'version',
+]
+
+# These are the dependencies the library needs in order to run.
+dependencies = [
+	'gcloud>=0.18.3',
+	'oauth2client>=4.1.3',
+	'pycryptodome>=3.14.1',
+	'python_jwt>=3.3.2',
+	'requests>=2.28.0',
+	'requests_toolbelt>=0.9.1',
+	'six>=1.16.0',
+]
+
+[project.urls]
+
+# Here is the URL where you can find the code, in this case on GitHub.
+Source = 'https://github.com/AsifArmanRahman/firebase-rest-api'
+
+[tool.flit.module]
+name = 'firebase'
