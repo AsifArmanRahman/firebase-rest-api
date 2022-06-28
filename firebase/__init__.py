@@ -5,12 +5,11 @@
 # --------------------------------------------------------------------------------------
 
 
-import requests
-from oauth2client.service_account import ServiceAccountCredentials
-
 from .auth import Auth
 from .storage import Storage
 from .database import Database
+from ._custom_requests import _custom_request
+from ._service_account_credentials import _service_account_creds_from_secret
 
 
 def initialize_app(config):
@@ -27,25 +26,10 @@ class Firebase:
 		self.storage_bucket = config["storageBucket"]
 
 		self.credentials = None
-		self.requests = requests.Session()
+		self.requests = _custom_request()
 
 		if config.get("serviceAccount"):
-			scopes = [
-				'https://www.googleapis.com/auth/firebase.database',
-				'https://www.googleapis.com/auth/userinfo.email',
-				"https://www.googleapis.com/auth/cloud-platform"
-			]
-			service_account_type = type(config["serviceAccount"])
-
-			if service_account_type is str:
-				self.credentials = ServiceAccountCredentials.from_json_keyfile_name(config["serviceAccount"], scopes)
-			if service_account_type is dict:
-				self.credentials = ServiceAccountCredentials.from_json_keyfile_dict(config["serviceAccount"], scopes)
-
-		adapter = requests.adapters.HTTPAdapter(max_retries=3)
-
-		for scheme in ('http://', 'https://'):
-			self.requests.mount(scheme, adapter)
+			self.credentials = _service_account_creds_from_secret(config['serviceAccount'])
 
 	def auth(self):
 		return Auth(self.api_key, self.credentials, self.requests)
