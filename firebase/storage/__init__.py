@@ -7,11 +7,7 @@
 
 import requests
 from gcloud import storage
-
-try:
-	from urllib.parse import quote
-except:
-	from urllib import quote
+from urllib.parse import quote
 
 from firebase._exception import raise_detailed_error
 

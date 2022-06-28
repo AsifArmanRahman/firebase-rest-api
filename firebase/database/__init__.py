@@ -9,11 +9,7 @@ import math
 import json
 import time
 from random import randrange
-
-try:
-	from urllib.parse import urlencode
-except:
-	from urllib import urlencode
+from urllib.parse import urlencode
 
 from ._stream import Stream
 from ._db_convert import FirebaseResponse
