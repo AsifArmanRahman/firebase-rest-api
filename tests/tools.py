@@ -9,6 +9,15 @@ from tests import config
 from firebase import initialize_app
 
 
+def make_auth(service_account=False):
+	if service_account:
+		c = config.SERVICE_CONFIG
+	else:
+		c = config.SIMPLE_CONFIG
+
+	return initialize_app(c).auth()
+
+
 def make_db(service_account=False):
 	if service_account:
 		c = config.SERVICE_CONFIG
@@ -16,3 +25,12 @@ def make_db(service_account=False):
 		c = config.SIMPLE_CONFIG
 
 	return initialize_app(c).database()
+
+
+def make_storage(service_account=False):
+	if service_account:
+		c = config.SERVICE_CONFIG
+	else:
+		c = config.SIMPLE_CONFIG
+
+	return initialize_app(c).storage()
