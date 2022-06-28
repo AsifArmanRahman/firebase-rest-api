@@ -1,3 +1,5 @@
+[![Build](https://github.com/AsifArmanRahman/firebase-rest-api/actions/workflows/build.yml/badge.svg)](https://github.com/AsifArmanRahman/firebase-rest-api/actions/workflows/build.yml)
+
 A simple python wrapper for [Google's Firebase REST API's](https://firebase.google.com).
 
 ## Getting Started
