@@ -8,10 +8,10 @@
 # get this from firebase console
 # go to project settings, general tab and click "Add Firebase to your web app"
 SIMPLE_CONFIG = {
-    "apiKey": "",
-    "authDomain": "",
-    "databaseURL": "",
-    "storageBucket": "",
+	"apiKey": "",
+	"authDomain": "",
+	"databaseURL": "",
+	"storageBucket": "",
 }
 
 # get this json file from firebase console

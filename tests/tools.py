@@ -10,9 +10,9 @@ from firebase import initialize_app
 
 
 def make_db(service_account=False):
-    if service_account:
-        c = config.SERVICE_CONFIG
-    else:
-        c = config.SIMPLE_CONFIG
+	if service_account:
+		c = config.SERVICE_CONFIG
+	else:
+		c = config.SIMPLE_CONFIG
 
-    return initialize_app(c).database()
+	return initialize_app(c).database()
