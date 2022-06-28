@@ -1,4 +1,6 @@
 [![Build](https://github.com/AsifArmanRahman/firebase-rest-api/actions/workflows/build.yml/badge.svg)](https://github.com/AsifArmanRahman/firebase-rest-api/actions/workflows/build.yml)
+[![Tests](https://github.com/AsifArmanRahman/firebase-rest-api/actions/workflows/tests.yml/badge.svg)](https://github.com/AsifArmanRahman/firebase-rest-api/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/gh/AsifArmanRahman/firebase-rest-api/branch/main/graph/badge.svg?token=N7TE1WVZ7W)](https://codecov.io/gh/AsifArmanRahman/firebase-rest-api)
 
 A simple python wrapper for [Google's Firebase REST API's](https://firebase.google.com).
 
