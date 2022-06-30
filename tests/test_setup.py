@@ -5,7 +5,14 @@
 # --------------------------------------------------------------------------------------
 
 
-from tests.tools import make_auth, make_db, make_storage
+import pytest
+
+from tests.tools import initiate_app_with_service_account_file, make_auth, make_db, make_storage
+
+
+@pytest.mark.xfail
+def test_initiate_app_with_service_account_file():
+	assert initiate_app_with_service_account_file()
 
 
 def test_setup_auth():
@@ -25,4 +32,3 @@ def test_setup_storage():
 	storage = make_storage(True)
 
 	assert storage.list_files()
-

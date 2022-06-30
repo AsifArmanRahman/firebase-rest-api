@@ -34,3 +34,10 @@ SERVICE_ACCOUNT = {
 
 
 SERVICE_CONFIG = dict(SIMPLE_CONFIG, serviceAccount=SERVICE_ACCOUNT)
+
+
+# get this json file from firebase console
+# go to project settings, service accounts tab and click generate new private key
+SERVICE_ACCOUNT_PATH = "firebase-adminsdk.json"
+
+SERVICE_CONFIG_WITH_FILE_PATH = dict(SIMPLE_CONFIG, serviceAccount=SERVICE_ACCOUNT_PATH)

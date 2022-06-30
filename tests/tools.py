@@ -9,6 +9,10 @@ from tests import config
 from firebase import initialize_app
 
 
+def initiate_app_with_service_account_file():
+	return initialize_app(config.SERVICE_CONFIG_WITH_FILE_PATH)
+
+
 def make_auth(service_account=False):
 	if service_account:
 		c = config.SERVICE_CONFIG
