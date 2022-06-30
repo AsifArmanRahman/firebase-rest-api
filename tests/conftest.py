@@ -1,4 +1,3 @@
-
 #   Copyright (c) 2022 Asif Arman Rahman
 #   Licensed under MIT (https://github.com/AsifArmanRahman/firebase/blob/main/LICENSE)
 
@@ -7,7 +6,8 @@
 
 import pytest
 
-from tests.tools import make_db
+from tests.tools import make_auth, make_db
+from tests.config import TEST_USER_EMAIL, TEST_USER_PASSWORD
 
 
 @pytest.fixture(scope='session')
@@ -18,3 +18,18 @@ def db():
 		yield lambda: make_db(service_account=True).child('firebase_tests')
 	finally:
 		make_db(service_account=True).child('firebase_tests').remove()
+
+
+@pytest.fixture(scope='session')
+def auth():
+	return make_auth(True)
+
+
+@pytest.fixture(scope='session')
+def email():
+	return TEST_USER_EMAIL
+
+
+@pytest.fixture(scope='session')
+def password():
+	return TEST_USER_PASSWORD
