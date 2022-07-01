@@ -6,7 +6,7 @@
 
 import pytest
 
-from tests.tools import make_auth, make_db
+from tests.tools import make_auth, make_db, make_storage
 from tests.config import TEST_USER_EMAIL, TEST_USER_PASSWORD
 
 
@@ -33,3 +33,10 @@ def email():
 @pytest.fixture(scope='session')
 def password():
 	return TEST_USER_PASSWORD
+
+
+@pytest.fixture(scope='session')
+def storage():
+	# To make it easier to test, we keep the test restricted to firebase_tests
+	# Because of the current mutations on calls, we return it as a function.
+	return make_storage(service_account=True)
