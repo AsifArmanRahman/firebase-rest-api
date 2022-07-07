@@ -24,7 +24,7 @@ copyright = '2022, Asif Arman Rahman'
 author = 'Asif Arman Rahman'
 
 # The full version, including alpha/beta/rc tags
-release = '0.4.5.dev1'
+release = __version__
 
 
 # -- General configuration ---------------------------------------------------

@@ -44,6 +44,9 @@ keywords = [
 # For a complete list go to https://pypi.org/classifiers/.
 classifiers = [
 
+	# I can say what phase of development my library is in.
+	'Development Status :: 3 - Alpha',
+
 	# My Intended audience is mostly those who understand finance.
 	'Intended Audience :: Developers',
 
