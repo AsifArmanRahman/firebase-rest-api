@@ -1,4 +1,4 @@
-name: Tests
+name: tests
 
 # Controls when the workflow will run
 on:
