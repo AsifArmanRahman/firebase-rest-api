@@ -33,6 +33,10 @@ release = __version__
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+	'sphinx.ext.autodoc',
+	'sphinx.ext.intersphinx',
+	'sphinx.ext.napoleon',
+	'sphinx.ext.viewcode',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -42,6 +46,13 @@ templates_path = ['_templates']
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+
+# Example configuration for intersphinx: refer to the Python standard library.
+intersphinx_mapping = {
+	'oauth2client': ("https://oauth2client.readthedocs.io/en/latest/", None),
+	'python': ("https://docs.python.org/3/", None),
+	'requests': ("https://requests.readthedocs.io/en/stable/", None),
+}
 
 
 # -- Options for HTML output -------------------------------------------------

@@ -93,6 +93,16 @@ Example Usage
 
 
 
+Documentation contents
+######################
+
+.. toctree::
+   :maxdepth: 2
+
+   firebase/modules
+
+
+
 Indices and tables
 ##################
 
