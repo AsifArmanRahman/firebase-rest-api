@@ -27,10 +27,10 @@ In order to use this library, you first need to go through the
 following steps:
 
 1. Select or create a  Firebase project from `Firebase Console`_.
-   :ref:`(guide)<guide/project-setup:Create a Firebase project>`
+   :ref:`(guide)<guide/setup:Create a Firebase project>`
 
 2. Register an Web App.
-   :ref:`(guide)<guide/project-setup:Register your app>`
+   :ref:`(guide)<guide/setup:Register your app>`
 
 .. _Firebase Console: https://console.firebase.google.com
 
@@ -95,6 +95,11 @@ Example Usage
 
 Documentation contents
 ######################
+
+.. toctree::
+   :maxdepth: 1
+
+   guide/setup
 
 .. toctree::
    :maxdepth: 2

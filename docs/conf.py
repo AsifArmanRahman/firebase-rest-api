@@ -34,10 +34,16 @@ release = __version__
 # ones.
 extensions = [
 	'sphinx.ext.autodoc',
+	'sphinx.ext.autosectionlabel',
 	'sphinx.ext.intersphinx',
 	'sphinx.ext.napoleon',
 	'sphinx.ext.viewcode',
+	'sphinx_design',
 ]
+
+# auto section label configuration
+autosectionlabel_prefix_document = True
+autosectionlabel_maxdepth = 2
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -68,5 +74,6 @@ html_static_path = ['_static']
 
 # custom static css files to add
 html_css_files = [
+	"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/fontawesome.min.css",
 	"css/my-styles.css",
 ]
