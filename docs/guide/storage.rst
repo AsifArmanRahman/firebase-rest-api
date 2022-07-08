@@ -100,5 +100,6 @@ Common Errors
 Index not defined
 ^^^^^^^^^^^^^^^^^
 
-+`Indexing<https://firebase.google.com/docs/database/security/indexing-data>`__
-is **not enabled** for the database reference.
++ `Indexing`_ is **not enabled** for the database reference.
+
+.. _Indexing: https://firebase.google.com/docs/database/security/indexing-data
