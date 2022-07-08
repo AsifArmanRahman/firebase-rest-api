@@ -86,10 +86,24 @@ dependencies = [
 	'six>=1.16.0',
 ]
 
+
+[project.optional-dependencies]
+
+docs = [
+	'Sphinx>=5.0.2',
+	'sphinx-rtd-theme>=1.0.0',
+	'sphinx_design>=0.2.0',
+]
+
+
 [project.urls]
 
 # Here is the URL where you can find the code, in this case on GitHub.
 Source = 'https://github.com/AsifArmanRahman/firebase-rest-api'
+
+# Here is the URL where you can find the documentation of the library, in this case on Read the Docs.
+Documentation = 'https://firebase-rest-api.readthedocs.io/'
+
 
 [tool.flit.module]
 name = 'firebase'
