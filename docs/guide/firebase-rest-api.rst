@@ -124,7 +124,7 @@ A Firebase app can use multiple Firebase services.
 
 ``firebaseApp.auth()`` - :ref:`Authentication<guide/authentication:Authentication>`
 
-``firebaseApp.database()`` - `Database`
+``firebaseApp.database()`` - :ref:`Database<guide/database:Database>`
 
 ``firebaseApp.storage()`` - `Storage`
 
