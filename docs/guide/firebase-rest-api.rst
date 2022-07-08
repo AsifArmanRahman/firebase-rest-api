@@ -126,7 +126,6 @@ A Firebase app can use multiple Firebase services.
 
 ``firebaseApp.database()`` - :ref:`Database<guide/database:Database>`
 
-``firebaseApp.storage()`` - `Storage`
+``firebaseApp.storage()`` - :ref:`Storage<guide/storage:Storage>`
 
 Check out the documentation for each service for further details.
-
