@@ -114,14 +114,15 @@ as the value for `serviceAccount` key.
 .. note::
    Adding a service account will authenticate as an admin
    by default for all database queries, check out the
-   `Authentication documentation` for how to authenticate users.
+   :ref:`Authentication documentation<guide/authentication:Authentication>`
+   for how to authenticate users.
 
 Use Services
 ************
 
 A Firebase app can use multiple Firebase services.
 
-``firebaseApp.auth()`` - `Authentication`
+``firebaseApp.auth()`` - :ref:`Authentication<guide/authentication:Authentication>`
 
 ``firebaseApp.database()`` - `Database`
 
