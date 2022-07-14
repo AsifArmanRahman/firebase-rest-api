@@ -10,7 +10,7 @@ import time
 import threading
 
 from ._keep_auth_session import KeepAuthSession
-from ._cloasble_sse_client import ClosableSSEClient
+from ._closable_sse_client import ClosableSSEClient
 
 
 class Stream:
