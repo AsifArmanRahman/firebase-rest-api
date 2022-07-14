@@ -5,6 +5,13 @@
 # --------------------------------------------------------------------------------------
 
 
+"""
+A simple python wrapper for Google's `Firebase Database REST API`_
+
+.. _Firebase Database REST API: 
+	https://firebase.google.com/docs/reference/rest/database
+"""
+
 import math
 import json
 import time
@@ -18,9 +25,26 @@ from ._db_convert import convert_to_firebase, convert_list_to_firebase
 
 
 class Database:
-	""" Database Service """
+	""" Firebase Database Service
+
+
+	:type api_key: str
+	:param api_key: ``apiKey`` from Firebase configuration.
+
+	:type credentials:
+		:class:`~oauth2client.service_account.ServiceAccountCredentials`
+	:param credentials: Service Account Credentials.
+
+	:type database_url: str
+	:param database_url: ``databaseURL`` from Firebase configuration.
+
+	:type requests: :class:`~requests.Session`
+	:param requests: Session to make HTTP requests.
+	"""
 
 	def __init__(self, api_key, credentials, database_url, requests):
+		""" Constructor """
+
 		if not database_url.endswith('/'):
 			url = ''.join([database_url, '/'])
 		else:
@@ -37,51 +61,223 @@ class Database:
 		self.last_rand_chars = []
 
 	def order_by_key(self):
+		""" Filter data by their keys.
+
+		| For more details:
+		| |filtering_by_key|_
+
+		.. |filtering_by_key| replace:: 
+			Firebase Documentation | Retrieve Data | Filtering
+			Data | filtering_by_key
+
+		.. _filtering_by_key: 
+			https://firebase.google.com/docs/database/rest/retrieve-data#filtering-by-key
+
+
+		:return: A reference to the instance object.
+		:rtype: Database
+		"""
+
 		self.build_query["orderBy"] = "$key"
 
 		return self
 
 	def order_by_value(self):
+		""" Filter data by the value of their child keys.
+
+		| For more details:
+		| |filtering-by-value|_
+		
+		.. |filtering-by-value| replace::
+			Firebase Documentation | Retrieve Data | Filtering
+			Data | filtering-by-value
+
+		.. _filtering-by-value: 
+			https://firebase.google.com/docs/database/rest/retrieve-data#filtering-by-value
+
+
+		:return: A reference to the instance object.
+		:rtype: Database
+		"""
+
 		self.build_query["orderBy"] = "$value"
 
 		return self
 
 	def order_by_child(self, order):
+		""" Filter data by a common child key.
+
+		| For more details:
+		| |filtering-by-a-specified-child-key|_
+
+		.. |filtering-by-a-specified-child-key| replace::
+			Firebase Documentation | Retrieve Data | Filtering
+			Data | filtering-by-a-specified-child-key
+
+		.. _filtering-by-a-specified-child-key: 
+			https://firebase.google.com/docs/database/rest/retrieve-data#filtering-by-a-specified-child-key
+
+
+		:type order: str
+		:param order: Child key name.
+
+
+		:return: A reference to the instance object.
+		:rtype: Database
+		"""
+
 		self.build_query["orderBy"] = order
 
 		return self
 
 	def start_at(self, start):
+		""" Filter data where child key value starts from specified
+		value.
+
+		| For more details:
+		| |range-queries|_
+
+		.. |range-queries| replace::
+			Firebase Documentation | Retrieve Data | Complex
+			Filtering | range-queries
+
+		.. _range-queries: 
+			https://firebase.google.com/docs/database/rest/retrieve-data#range-queries
+
+
+		:type start: int or float or str
+		:param start: Arbitrary starting points for queries.
+
+
+		:return: A reference to the instance object.
+		:rtype: Database
+		"""
+
 		self.build_query["startAt"] = start
 
 		return self
 
 	def end_at(self, end):
+		""" Filter data where child key value ends at specified
+		value.
+
+		| For more details:
+		| |range-queries|_
+
+
+		:type end: int or float or str
+		:param end: Arbitrary ending points for queries.
+
+
+		:return: A reference to the instance object.
+		:rtype: Database
+		"""
+
 		self.build_query["endAt"] = end
 
 		return self
 
 	def equal_to(self, equal):
+		""" Filter data where child key value is equal to specified
+		value.
+
+		| For more details:
+		| |range-queries|_
+
+
+		:type equal: int or float or str
+		:param equal: Arbitrary point for queries.
+
+
+		:return: A reference to the instance object.
+		:rtype: Database
+		"""
+
 		self.build_query["equalTo"] = equal
 
 		return self
 
 	def limit_to_first(self, limit_first):
+		""" Filter the number of data to receive from top.
+
+		| For more details:
+		| |limit-queries|_
+
+		.. |limit-queries| replace::
+			Firebase Documentation | Retrieve Data | Complex
+			Filtering | limit-queries
+
+		.. _limit-queries: 
+			https://firebase.google.com/docs/database/rest/retrieve-data#limit-queries
+
+
+		:type limit_first: int
+		:param limit_first: Maximum number of children to select
+			from top.
+
+
+		:return: A reference to the instance object.
+		:rtype: Database
+		"""
+
 		self.build_query["limitToFirst"] = limit_first
 
 		return self
 
 	def limit_to_last(self, limit_last):
+		""" Filter the number of data to receive from bottom.
+
+		| For more details:
+		| |limit-queries|_
+
+
+		:type limit_last: int
+		:param limit_last: Maximum number of children to select
+			from bottom.
+
+
+		:return: A reference to the instance object.
+		:rtype: Database
+		"""
+
 		self.build_query["limitToLast"] = limit_last
 
 		return self
 
 	def shallow(self):
+		""" Limit the depth of the response.
+
+		| For more details:
+		| |section-param-shallow|_
+
+		.. |section-param-shallow| replace::
+			Firebase Database REST API | Query Parameters |
+			section-param-shallow |
+
+		.. _section-param-shallow:
+			https://firebase.google.com/docs/reference/rest/database#section-param-shallow
+
+
+		:return: A reference to the instance object.
+		:rtype: Database
+		"""
+
 		self.build_query["shallow"] = True
 
 		return self
 
 	def child(self, *args):
+		""" Build paths to your data.
+
+
+		:type args: str
+		:param args: Positional arguments to build path to database.
+
+
+		:return: A reference to the instance object.
+		:rtype: Database
+		"""
+
 		new_path = "/".join([str(arg) for arg in args])
 
 		if self.path:
@@ -96,6 +292,17 @@ class Database:
 		return self
 
 	def build_request_url(self, token):
+		""" Builds Request URL for query.
+
+
+		:type token: str
+		:param token: Firebase Auth User ID Token
+
+
+		:return: Request URL
+		:rtype: str
+		"""
+
 		parameters = {}
 
 		if token:
@@ -120,6 +327,17 @@ class Database:
 		return request_ref
 
 	def build_headers(self, token=None):
+		""" Build Request Header.
+
+		:type token: str
+		:param token: (Optional) Firebase Auth User ID Token, defaults 
+			to :data:`None`.
+
+
+		:return: Request Header.
+		:rtype: dict
+		"""
+
 		headers = {"content-type": "application/json; charset=UTF-8"}
 
 		if not token and self.credentials:
@@ -129,6 +347,32 @@ class Database:
 		return headers
 
 	def get(self, token=None, json_kwargs={}):
+		""" Read data from database.
+
+		| For more details:
+		| |section-get|_
+
+		.. |section-get| replace::
+			Firebase Database REST API | GET - Reading Data
+
+		.. _section-get:
+			https://firebase.google.com/docs/reference/rest/database#section-get
+
+
+		:type token: str
+		:param token: (Optional) Firebase Auth User ID Token, defaults 
+			to :data:`None`.
+
+		:type json_kwargs: dict
+		:param json_kwargs: (Optional) Keyword arguments to send to 
+			:func:`json.dumps` method for deserialization of data, 
+			defaults to :data:`{}` (empty :class:`dict` object).
+				
+
+		:return: The data associated with the path.
+		:rtype: dict
+		"""
+
 		build_query = self.build_query
 		query_key = self.path.split("/")[-1]
 		request_ref = self.build_request_url(token)
@@ -170,6 +414,39 @@ class Database:
 		return FirebaseResponse(convert_to_firebase(sorted_response), query_key)
 
 	def push(self, data, token=None, json_kwargs={}):
+		""" Add data to database.
+
+		This method adds a Firebase Push ID at the end of the specified 
+		path, and then adds/stores the data in database, unlike 
+		:meth:`set` which does not use a Firebase Push ID.
+
+		| For more details:
+		| |section-post|_
+
+		.. |section-post| replace::
+			Firebase Database REST API | POST - Pushing Data
+
+		.. _section-post:
+			https://firebase.google.com/docs/reference/rest/database#section-post
+
+
+		:type data: dict
+		:param data: Data to be stored in database.
+
+		:type token: str
+		:param token: (Optional) Firebase Auth User ID Token, defaults 
+			to :data:`None`.
+
+		:type json_kwargs: dict
+		:param json_kwargs: (Optional) Keyword arguments to send to 
+			:func:`json.dumps` method for serialization of data, 
+			defaults to :data:`{}` (empty :class:`dict` object).
+
+
+		:return: Child key (Firebase Push ID) name of the data.
+		:rtype: dict
+		"""
+
 		request_ref = self.check_token(self.database_url, self.path, token)
 
 		self.path = ""
@@ -182,6 +459,40 @@ class Database:
 		return request_object.json()
 
 	def set(self, data, token=None, json_kwargs={}):
+		""" Add data to database.
+
+		This method writes the data in database in the specified 
+		path, unlike :meth:`push` which creates a Firebase Push ID then 
+		writes the data to database.
+
+		| For more details:
+		| |section-put|_
+
+		.. |section-put| replace::
+			Firebase Database REST API | PUT - Writing Data
+
+		.. _section-put:
+			https://firebase.google.com/docs/reference/rest/database#section-put
+
+
+		:type data: dict
+		:param data: Data to be stored in database.
+
+		:type token: str
+		:param token: (Optional) Firebase Auth User ID Token, defaults 
+			to :data:`None`.
+
+		:type json_kwargs: dict
+		:param json_kwargs: (Optional) Keyword arguments to send to 
+			:func:`json.dumps` method for serialization of data, 
+			defaults to :data:`{}` (empty :class:`dict` object).
+
+
+		:return: Successful attempt returns the ``data`` specified to 
+			add to database.
+		:rtype: dict
+		"""
+
 		request_ref = self.check_token(self.database_url, self.path, token)
 
 		self.path = ""
@@ -194,6 +505,36 @@ class Database:
 		return request_object.json()
 
 	def update(self, data, token=None, json_kwargs={}):
+		""" Update stored data of database.
+
+		| For more details:
+		| |section-patch|_
+
+		.. |section-patch| replace:: 
+			Firebase Database REST API | PATCH - Updating Data
+
+		.. _section-patch: 
+			https://firebase.google.com/docs/reference/rest/database#section-patch
+
+
+		:type data: dict
+		:param data: Data to be updated.
+
+		:type token: str
+		:param token: (Optional) Firebase Auth User ID Token, defaults 
+			to :data:`None`.
+
+		:type json_kwargs: dict
+		:param json_kwargs: (Optional) Keyword arguments to send to 
+			:func:`json.dumps` method for serialization of data, 
+			defaults to :data:`{}` (empty :class:`dict` object).
+
+
+		:return: Successful attempt returns the data specified to 
+			update.
+		:rtype: dict
+		"""
+
 		request_ref = self.check_token(self.database_url, self.path, token)
 
 		self.path = ""
@@ -206,6 +547,27 @@ class Database:
 		return request_object.json()
 
 	def remove(self, token=None):
+		""" Delete data from database.
+
+		| For more details:
+		| |section-delete|_
+
+		.. |section-delete| replace::
+			Firebase Database REST API | DELETE - Removing Data
+
+		.. _section-delete: 
+			https://firebase.google.com/docs/reference/rest/database#section-delete
+
+
+		:type token: str
+		:param token: (Optional) Firebase Auth User ID Token, defaults 
+			to :data:`None`.
+
+
+		:return: Successful attempt returns :data:`None`.
+		:rtype: :data:`None`
+		"""
+
 		request_ref = self.check_token(self.database_url, self.path, token)
 
 		self.path = ""
@@ -223,12 +585,46 @@ class Database:
 		return Stream(request_ref, stream_handler, self.build_headers, stream_id, is_async)
 
 	def check_token(self, database_url, path, token):
+		""" Builds Request URL to write/update/remove data.
+
+
+		:type database_url: str
+		:param database_url: ``databaseURL`` from Firebase 
+			configuration.
+
+		:type path: str
+		:param path: Path to data.
+
+		:type token: str
+		:param token: Firebase Auth User ID Token
+
+
+		:return: Request URL
+		:rtype: str
+		"""
+
 		if token:
 			return '{0}{1}.json?auth={2}'.format(database_url, path, token)
 		else:
 			return '{0}{1}.json'.format(database_url, path)
 
 	def generate_key(self):
+		""" Generate Firebase's push IDs.
+
+		| For more details:
+		| |firebase-push-id|_
+
+		.. |firebase-push-id| replace::
+			Firebase Blog | The 2^120 Ways to Ensure Unique Identifiers
+
+		.. _firebase-push-id:
+			https://firebase.blog/posts/2015/02/the-2120-ways-to-ensure-unique_68
+
+
+		:return: Firebase's push IDs
+		:rtype: str
+		"""
+
 		push_chars = '-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz'
 
 		now = int(time.time() * 1000)
@@ -259,6 +655,26 @@ class Database:
 		return new_id
 
 	def sort(self, origin, by_key, reverse=False):
+		""" Further sort data based on a child key value.
+
+
+		:type origin: dict
+		:param origin: Data to be sorted (generally the output from 
+			:meth:`get` method).
+
+		:type by_key: str
+		:param by_key: Child key name to sort by.
+
+		:type reverse: bool
+		:param reverse: (Optional) Whether to return data in descending 
+			order, defaults to :data:`False` (data is returned in 
+			ascending order).
+
+
+		:return: Sorted version of the data.
+		:rtype: dict
+		"""
+
 		# unpack firebase objects
 		firebases = origin.each()
 
@@ -273,6 +689,31 @@ class Database:
 		return FirebaseResponse(convert_to_firebase(data), origin.key())
 
 	def get_etag(self, token=None, json_kwargs={}):
+		""" Fetches Firebase ETag at a specified location.
+
+		| For more details:
+		| |section-cond-etag|_
+
+		.. |section-cond-etag| replace::
+			Firebase Database REST API | Conditional Requests | 
+			#section-cond-etag
+
+		.. _section-cond-etag: 
+			https://firebase.google.com/docs/reference/rest/database#section-cond-etag
+
+
+		:type token: str
+		:param token: (Optional) Firebase Auth User ID Token, defaults 
+			to :data:`None`.
+
+		:type json_kwargs: dict
+		:param json_kwargs: (Optional)
+
+
+		:return: Firebase ETag
+		:rtype: str
+		"""
+
 		request_ref = self.build_request_url(token)
 
 		headers = self.build_headers(token)
@@ -285,6 +726,42 @@ class Database:
 		return request_object.headers['ETag']
 
 	def conditional_set(self, data, etag, token=None, json_kwargs={}):
+		""" Conditionally add data to database.
+
+		| For more details:
+		| |section-expected-responses|_
+
+		.. |section-expected-responses| replace::
+			Firebase Database REST API | Conditional Requests | 
+			section-expected-responses
+
+		.. _section-expected-responses:
+			https://firebase.google.com/docs/reference/rest/database#section-expected-responses
+
+
+		:type data: dict
+		:param data: Data to be stored in database.
+		
+		:type etag: str
+		:param etag: Unique identifier for specific data at a
+			specified location.
+		
+		:type token: str
+		:param token: (Optional) Firebase Auth User ID Token, defaults 
+			to :data:`None`.
+		
+		:type json_kwargs: dict
+		:param json_kwargs: (Optional) Keyword arguments to send to 
+			:meth:`json.dumps` methods for serialization of data, 
+			defaults to ``{}`` (empty :class:`dict` object).
+
+
+		:return: Successful attempt returns the data specified to store,
+			failed attempt (due to ETag mismatch) returns the current 
+			``ETag`` for the specified path.
+		:rtype: dict
+		"""
+
 		request_ref = self.check_token(self.database_url, self.path, token)
 
 		self.path = ""
@@ -303,6 +780,27 @@ class Database:
 		return request_object.json()
 
 	def conditional_remove(self, etag, token=None):
+		""" Conditionally delete data from database.
+
+		| For more details:
+		| |section-expected-responses|_
+
+
+		:type etag: str
+		:param etag: Unique identifier for specific data at a
+			specified location.
+
+		:type token: str
+		:param token: (Optional) Firebase Auth User ID Token, defaults 
+			to :data:`None`.
+
+
+		:return: Successful attempt returns :data:`None`, in case of ETag
+			mismatch an updated ETag for the specific data is
+			returned in :class:`dict` object
+		:rtype: :data:`None`
+		"""
+
 		request_ref = self.check_token(self.database_url, self.path, token)
 
 		self.path = ""
