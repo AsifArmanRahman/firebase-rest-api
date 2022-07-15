@@ -5,6 +5,13 @@
 # --------------------------------------------------------------------------------------
 
 
+"""
+A simple python wrapper for Google's `Firebase Cloud Storage REST API`_
+
+.. _Firebase Cloud Storage REST API:
+	https://firebase.google.com/docs/reference/rest/storage/rest
+"""
+
 import requests
 from gcloud import storage
 from urllib.parse import quote
@@ -13,9 +20,23 @@ from firebase._exception import raise_detailed_error
 
 
 class Storage:
-	""" Storage Service """
+	""" Firebase Cloud Storage Service 
+
+	:type credentials:
+		:class:`~oauth2client.service_account.ServiceAccountCredentials`
+	:param credentials: Service Account Credentials.
+
+	:type requests: :class:`~requests.Session`
+	:param requests: Session to make HTTP requests.
+
+	:type storage_bucket: str
+	:param storage_bucket: ``storageBucket`` from Firebase 
+		configuration.
+	"""
 
 	def __init__(self, credentials, requests, storage_bucket):
+		""" Constructor """
+
 		self.credentials = credentials
 		self.requests = requests
 		self.storage_bucket = "https://firebasestorage.googleapis.com/v0/b/" + storage_bucket
@@ -27,6 +48,17 @@ class Storage:
 			self.bucket = client.get_bucket(storage_bucket)
 
 	def child(self, *args):
+		""" Build paths to your storage.
+
+
+		:type args: str
+		:param args: Positional arguments to build path to storage.
+
+
+		:return: A reference to the instance object.
+		:rtype: Storage
+		"""
+
 		new_path = "/".join(args)
 
 		if self.path:
@@ -40,6 +72,31 @@ class Storage:
 		return self
 
 	def put(self, file, token=None):
+		""" Upload file to storage.
+
+		| For more details:
+		| |upload_files|_
+
+		.. |upload_files| replace::
+			Firebase Documentation | Upload files with Cloud Storage on 
+			Web
+
+		.. _upload_files:
+			https://firebase.google.com/docs/storage/web/upload-files#upload_files
+
+
+		:type file: str
+		:param file: Local path to file to upload.
+
+		:type token: str
+		:param token: (Optional) Firebase Auth User ID Token, defaults 
+			to :data:`None`.
+
+
+		:return: Successful attempt returns :data:`None`.
+		:rtype: :data:`None`
+		"""
+
 		# reset path
 		path = self.path
 		self.path = None
@@ -75,6 +132,26 @@ class Storage:
 			return request_object.json()
 
 	def delete(self, name, token):
+		""" Delete file from storage.
+
+		| For more details:
+		| |delete_a_file|_
+
+		.. |delete_a_file| replace::
+			Firebase Documentation | Delete files with Cloud Storage on 
+			Web
+
+		.. _delete_a_file:
+			https://firebase.google.com/docs/storage/web/delete-files#delete_a_file
+
+
+		:type name: str
+		:param name: Cloud path to file.
+
+		:type token: str
+		:param token: Firebase Auth User ID Token
+		"""
+
 		if self.credentials:
 			self.bucket.delete_blob(name)
 		else:
@@ -89,6 +166,30 @@ class Storage:
 			raise_detailed_error(request_object)
 
 	def download(self, path, filename, token=None):
+		""" Download file from storage.
+
+		| For more details:
+		| |download_data_via_url|_
+
+		.. |download_data_via_url| replace::
+			Firebase Documentation | Download files with Cloud Storage 
+			on Web
+
+		.. _download_data_via_url:
+			https://firebase.google.com/docs/storage/web/download-files#download_data_via_url
+
+
+		:type path: str
+		:param path: Path to cloud file
+
+		:type filename:  str
+		:param filename: File name to be downloaded as.
+
+		:type token: str
+		:param token: (Optional) Firebase Auth User ID Token, defaults 
+			to :data:`None`.
+		"""
+
 		# remove leading backlash
 		url = self.get_url(token)
 
@@ -118,6 +219,17 @@ class Storage:
 						f.write(chunk)
 
 	def get_url(self, token):
+		""" Fetches URL for file.
+
+
+		:type token: str
+		:param token: Firebase Auth User ID Token.
+
+
+		:return: URL for the file.
+		:rtype: str
+		"""
+
 		path = self.path
 		self.path = None
 
@@ -130,4 +242,21 @@ class Storage:
 		return "{0}/o/{1}?alt=media".format(self.storage_bucket, quote(path, safe=''))
 
 	def list_files(self):
+		""" List of all files in storage.
+
+		| for more details:
+		| |list_all_files|_
+
+		.. |list_all_files| replace::
+			Firebase Documentation | List files with Cloud Storage on 
+			Web
+
+		.. _list_all_files:
+			https://firebase.google.com/docs/storage/web/list-files#list_all_files
+
+
+		:return: list of :class:`~gcloud.storage.blob.Blob`
+		:rtype: :class:`~gcloud.storage.bucket._BlobIterator`
+		"""
+
 		return self.bucket.list_blobs()
