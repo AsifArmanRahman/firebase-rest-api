@@ -28,9 +28,6 @@ class Database:
 	""" Firebase Database Service
 
 
-	:type api_key: str
-	:param api_key: ``apiKey`` from Firebase configuration.
-
 	:type credentials:
 		:class:`~oauth2client.service_account.ServiceAccountCredentials`
 	:param credentials: Service Account Credentials.
@@ -42,7 +39,7 @@ class Database:
 	:param requests: Session to make HTTP requests.
 	"""
 
-	def __init__(self, api_key, credentials, database_url, requests):
+	def __init__(self, credentials, database_url, requests):
 		""" Constructor """
 
 		if not database_url.endswith('/'):
@@ -50,7 +47,6 @@ class Database:
 		else:
 			url = database_url
 
-		self.api_key = api_key
 		self.credentials = credentials
 		self.database_url = url
 		self.requests = requests
@@ -688,7 +684,7 @@ class Database:
 
 		return FirebaseResponse(convert_to_firebase(data), origin.key())
 
-	def get_etag(self, token=None, json_kwargs={}):
+	def get_etag(self, token=None):
 		""" Fetches Firebase ETag at a specified location.
 
 		| For more details:
@@ -705,9 +701,6 @@ class Database:
 		:type token: str
 		:param token: (Optional) Firebase Auth User ID Token, defaults 
 			to :data:`None`.
-
-		:type json_kwargs: dict
-		:param json_kwargs: (Optional)
 
 
 		:return: Firebase ETag

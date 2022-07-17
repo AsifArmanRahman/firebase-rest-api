@@ -72,7 +72,7 @@ class Firebase:
 		:rtype: Database
 		"""
 
-		return Database(self.api_key, self.credentials, self.database_url, self.requests)
+		return Database(self.credentials, self.database_url, self.requests)
 
 	def storage(self):
 		"""Initializes and returns a new Firebase Storage instance.
