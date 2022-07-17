@@ -20,3 +20,6 @@ class TestStorage:
 
 	def test_delete(self, storage):
 		assert storage.delete('firebase-test-001/uploaded-file.txt', None) is None
+
+	def test_list_of_files(self, storage):
+		assert storage.list_files()
