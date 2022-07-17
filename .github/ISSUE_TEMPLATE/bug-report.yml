@@ -1,0 +1,92 @@
+name: 🪲 Bug
+description: Report an issue to help improve the project.
+title: "[Bug]: <title>"
+labels: ['bug', 'triage']
+
+body:
+
+    -   type: markdown
+        id: greet
+        attributes:
+            value: |
+                Thanks for stopping by to let us know something could be better!
+
+    -   type: checkboxes
+        id: quick-fix
+        attributes:
+            label: Is there an existing issue for this?
+            description: |
+                Please search to see if an issue already exists for the bug you encountered.
+
+                -   https://github.com/AsifArmanRahman/firebase-rest-api/issues
+            options:
+                -   label: I have searched the existing issues
+                    required: true
+
+    -   type: markdown
+        id: issue-persists
+        attributes:
+            value: |
+                <br>
+
+                ## If you are still having issues, please be sure to include as much information as possible:
+
+    -   type: textarea
+        id: environment
+        attributes:
+            label: Environment
+            description: |
+                examples:
+                -   **OS**: Ubuntu 20.04
+                -   **Python**: 3.9.12
+            value: |
+                -   OS:
+                -   Python:
+            render: markdown
+        validations:
+            required: true
+
+    -   type: textarea
+        id: what-happened
+        attributes:
+            label: What happened?
+            description: |
+                Also tell us, what did you expect to happen?
+            placeholder: |
+                A bug happened!
+        validations:
+            required: true
+
+    -   type: textarea
+        id: code-snippet
+        attributes:
+            label: Code Snippet
+            description: |
+                Please provide the code snippet to reproduce bug.
+
+                Note: This will be automatically formatted into code, so no need for backtick's.
+            render: shell
+        validations:
+            required: true
+
+    -   type: textarea
+        id: logs
+        attributes:
+            label: Relevant log output
+            description: |
+                Please copy and paste any relevant log output. 
+
+                Note: This will be automatically formatted into code, so no need for backtick's.
+            render: shell
+        validations:
+            required: false
+
+    -   type: textarea
+        attributes:
+            label: Anything else?
+            description: |
+                Links? References? Anything that will give us more context about the issue you are encountering!
+
+                Tip: You can attach images or files by clicking this area to highlight it and then dragging files in.
+        validations:
+            required: false
