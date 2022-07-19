@@ -17,9 +17,6 @@ from ._custom_requests import _custom_request
 from ._service_account_credentials import _service_account_creds_from_secret
 
 
-__version__ = '0.4.5a1'
-
-
 def initialize_app(config):
 	"""Initializes and returns a new Firebase instance.
 

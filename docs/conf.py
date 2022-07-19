@@ -12,10 +12,11 @@
 #
 import os
 import sys
+import toml
+
 sys.path.insert(0, os.path.abspath('..'))
 
-from firebase import __version__
-
+project_config = toml.load('..//pyproject.toml')
 
 # -- Project information -----------------------------------------------------
 
@@ -24,7 +25,7 @@ copyright = '2022, Asif Arman Rahman'
 author = 'Asif Arman Rahman'
 
 # The full version, including alpha/beta/rc tags
-release = __version__
+release = project_config['project']['version']
 
 
 # -- General configuration ---------------------------------------------------

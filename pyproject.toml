@@ -15,6 +15,9 @@ build-backend = 'flit_core.buildapi'
 # Define the library name, this is what is used along with `pip install`.
 name = 'firebase-rest-api'
 
+# Define the version of this library.
+version = '0.4.5a1'
+
 # Here is a small description of the library. This appears
 # when someone searches for the library on https://pypi.org/search.
 description = "A simple python wrapper for Google's Firebase REST API's."
@@ -71,10 +74,6 @@ classifiers = [
 	# Here are the topics that my library covers.
 	'Topic :: Software Development :: Libraries :: Python Modules',
 ]
-dynamic = [
-	# Define the version of this library.
-	'version',
-]
 
 # These are the dependencies the library needs in order to run.
 dependencies = [
@@ -93,6 +92,7 @@ docs = [
 	'Sphinx>=5.0.2',
 	'sphinx-rtd-theme>=1.0.0',
 	'sphinx_design>=0.2.0',
+	'toml>=0.10.2'
 ]
 
 
