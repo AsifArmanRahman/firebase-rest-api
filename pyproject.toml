@@ -16,7 +16,7 @@ build-backend = 'flit_core.buildapi'
 name = 'firebase-rest-api'
 
 # Define the version of this library.
-version = '0.4.5a1'
+version = '0.4.5'
 
 # Here is a small description of the library. This appears
 # when someone searches for the library on https://pypi.org/search.
