@@ -48,7 +48,7 @@ keywords = [
 classifiers = [
 
 	# I can say what phase of development my library is in.
-	'Development Status :: 3 - Alpha',
+	'Development Status :: 5 - Production/Stable',
 
 	# My Intended audience is mostly those who understand finance.
 	'Intended Audience :: Developers',
