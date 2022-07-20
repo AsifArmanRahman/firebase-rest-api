@@ -80,7 +80,6 @@ dynamic = [
 dependencies = [
 	'gcloud>=0.18.3',
 	'oauth2client>=4.1.3',
-	'pycryptodome>=3.14.1',
 	'python_jwt>=3.3.2',
 	'requests>=2.27.1',
 	'six>=1.16.0',

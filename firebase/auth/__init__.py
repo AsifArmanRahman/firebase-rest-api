@@ -15,7 +15,7 @@ A simple python wrapper for Google's
 import json
 import datetime
 import python_jwt as jwt
-from Crypto.PublicKey import RSA
+import jwcrypto.jwk as jwk
 
 from firebase._exception import raise_detailed_error
 
@@ -121,7 +121,7 @@ class Auth:
 		"""
 
 		service_account_email = self.credentials.service_account_email
-		private_key = RSA.importKey(self.credentials._private_key_pkcs8_pem)
+		private_key = jwk.JWK.from_pem(self.credentials._private_key_pkcs8_pem.encode('utf-8'))
 
 		payload = {
 			"iss": service_account_email,
@@ -135,7 +135,7 @@ class Auth:
 
 		exp = datetime.timedelta(minutes=expiry_minutes)
 
-		return jwt.generate_jwt(payload, private_key, "RS256", exp)
+		return jwt.generate_jwt(payload, private_key, "RS256", exp, other_headers={'kid': self.credentials._private_key_id})
 
 	def sign_in_with_custom_token(self, token):
 		""" Exchange custom token for an ID and refresh token.
