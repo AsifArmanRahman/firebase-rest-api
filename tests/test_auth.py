@@ -42,19 +42,16 @@ class TestAuth:
 		self.__class__.anonymous_user = user
 		assert user
 
-	@pytest.mark.xfail
 	def test_create_custom_token(self, auth):
-		token = auth.create_custom_token('CreateCustomToken')
+		token = auth.create_custom_token('CreateCustomToken1')
 		self.__class__.custom_token = token
 		assert token
 
-	@pytest.mark.xfail
 	def test_create_custom_token_with_claims(self, auth):
-		token = auth.create_custom_token('CreateCustomToken', {'premium': True})
+		token = auth.create_custom_token('CreateCustomToken2', {'premium': True})
 		self.__class__.custom_token_with_claims = token
 		assert token
 
-	@pytest.mark.xfail
 	def test_sign_in_with_custom_token(self, auth):
 		user1 = auth.sign_in_with_custom_token(self.__class__.custom_token)
 		user2 = auth.sign_in_with_custom_token(self.__class__.custom_token_with_claims)
@@ -87,8 +84,5 @@ class TestAuth:
 	def test_delete_user_account(self, auth):
 		assert auth.delete_user_account(self.__class__.user.get('idToken'))
 		assert auth.delete_user_account(self.__class__.anonymous_user.get('idToken'))
-
-	@pytest.mark.xfail
-	def test_delete_custom_user_account(self, auth):
 		assert auth.delete_user_account(self.__class__.custom_user.get('idToken'))
 		assert auth.delete_user_account(self.__class__.custom_user_with_claims.get('idToken'))
