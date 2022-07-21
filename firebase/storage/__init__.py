@@ -131,7 +131,7 @@ class Storage:
 
 			return request_object.json()
 
-	def delete(self, name, token):
+	def delete(self, token=None):
 		""" Delete file from storage.
 
 		| For more details:
@@ -145,17 +145,23 @@ class Storage:
 			https://firebase.google.com/docs/storage/web/delete-files#delete_a_file
 
 
-		:type name: str
-		:param name: Cloud path to file.
-
 		:type token: str
-		:param token: Firebase Auth User ID Token
+		:param token: (Optional) Firebase Auth User ID Token, defaults 
+			to :data:`None`.
 		"""
 
+		# reset path
+		path = self.path
+		self.path = None
+
+		# remove leading backlash
+		if path.startswith('/'):
+			path = path[1:]
+
 		if self.credentials:
-			self.bucket.delete_blob(name)
+			self.bucket.delete_blob(path)
 		else:
-			request_ref = self.storage_bucket + "/o?name={0}".format(name)
+			request_ref = self.storage_bucket + "/o?name={0}".format(path)
 
 			if token:
 				headers = {"Authorization": "Firebase " + token}

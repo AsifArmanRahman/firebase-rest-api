@@ -23,7 +23,8 @@ class TestStorage:
 		assert os.path.exists('tests/static/downloaded.txt')
 
 	def test_delete(self, storage):
-		assert storage.delete('firebase-test-001/uploaded-file.txt', None) is None
+		os.remove('tests/static/downloaded.txt')
+		assert storage.child('firebase-test-001/uploaded-file.txt').delete() is None
 
 	def test_list_of_files(self, storage):
 		assert storage.list_files()
