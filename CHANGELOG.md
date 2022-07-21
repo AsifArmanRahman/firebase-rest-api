@@ -1,3 +1,12 @@
+## [0.4.7](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v0.4.6...v0.4.7) (2022-07-21)
+
+
+### Bug Fixes
+
+* **storage:** set path via 𝘤𝘩𝘪𝘭𝘥 for 𝘥𝘰𝘸𝘯𝘭𝘰𝘢𝘥 ([da4d1de](https://github.com/AsifArmanRahman/firebase-rest-api/commit/da4d1deb9cfcc3c962f0240b70f9fee284dcd3e6))
+
+
+
 ## [0.4.6](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v0.4.5...v0.4.6) (2022-07-20)
 
 
