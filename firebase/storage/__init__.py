@@ -165,7 +165,7 @@ class Storage:
 
 			raise_detailed_error(request_object)
 
-	def download(self, path, filename, token=None):
+	def download(self, filename, token=None):
 		""" Download file from storage.
 
 		| For more details:
@@ -179,9 +179,6 @@ class Storage:
 			https://firebase.google.com/docs/storage/web/download-files#download_data_via_url
 
 
-		:type path: str
-		:param path: Path to cloud file
-
 		:type filename:  str
 		:param filename: File name to be downloaded as.
 
@@ -190,20 +187,23 @@ class Storage:
 			to :data:`None`.
 		"""
 
-		# remove leading backlash
-		url = self.get_url(token)
-
-		if path.startswith('/'):
-			path = path[1:]
-
 		if self.credentials:
+
+			# reset path
+			path = self.path
+			self.path = None
+
+			# remove leading backlash
+			if path.startswith('/'):
+				path = path[1:]
+
 			blob = self.bucket.get_blob(path)
-			if not blob is None:
+			if blob is not None:
 				blob.download_to_filename(filename)
 
 		elif token:
 			headers = {"Authorization": "Firebase " + token}
-			r = requests.get(url, stream=True, headers=headers)
+			r = requests.get(self.get_url(token), stream=True, headers=headers)
 
 			if r.status_code == 200:
 				with open(filename, 'wb') as f:
@@ -211,7 +211,7 @@ class Storage:
 						f.write(chunk)
 
 		else:
-			r = requests.get(url, stream=True)
+			r = requests.get(self.get_url(token), stream=True)
 
 			if r.status_code == 200:
 				with open(filename, 'wb') as f:
