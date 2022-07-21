@@ -1,3 +1,12 @@
+## [0.4.8](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v0.4.7...v0.4.8) (2022-07-21)
+
+
+### Bug Fixes
+
+* **storage:** set path via 𝘤𝘩𝘪𝘭𝘥 for 𝘥𝘦𝘭𝘦𝘵𝘦 ([b0527f0](https://github.com/AsifArmanRahman/firebase-rest-api/commit/b0527f0d418ad203df5845e1fd123bafe88a4b5d))
+
+
+
 ## [0.4.7](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v0.4.6...v0.4.7) (2022-07-21)
 
 
