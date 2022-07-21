@@ -11,6 +11,16 @@ from tests.config import TEST_USER_EMAIL, TEST_USER_PASSWORD
 
 
 @pytest.fixture(scope='session')
+def auth():
+	return make_auth()
+
+
+@pytest.fixture(scope='session')
+def auth_admin():
+	return make_auth(True)
+
+
+@pytest.fixture(scope='session')
 def db():
 	# To make it easier to test, we keep the test restricted to firebase_tests
 	# Because of the current mutations on calls, we return it as a function.
@@ -18,11 +28,6 @@ def db():
 		yield lambda: make_db(service_account=True).child('firebase_tests')
 	finally:
 		make_db(service_account=True).child('firebase_tests').remove()
-
-
-@pytest.fixture(scope='session')
-def auth():
-	return make_auth(True)
 
 
 @pytest.fixture(scope='session')

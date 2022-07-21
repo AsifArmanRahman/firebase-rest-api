@@ -16,6 +16,13 @@ def test_initiate_app_with_service_account_file():
 
 
 def test_setup_auth():
+	auth = make_auth()
+	user = auth.sign_in_anonymous()
+
+	assert auth.delete_user_account(user['idToken'])
+
+
+def test_setup_auth_admin():
 	auth = make_auth(True)
 	user = auth.sign_in_anonymous()
 
