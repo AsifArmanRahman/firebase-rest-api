@@ -79,7 +79,10 @@ class TestAuth:
 		assert auth.verify_password_reset_code('123456', 'NewTestPassword123')
 
 	def test_update_profile_display_name(self, auth):
-		assert auth.update_profile(self.__class__.user.get('idToken'), display_name='Test User')
+		new_name = 'Test User'
+		user = auth.update_profile(self.__class__.user.get('idToken'), display_name=new_name)
+		assert user
+		assert new_name == user['displayName']
 
 	def test_delete_user_account(self, auth):
 		assert auth.delete_user_account(self.__class__.user.get('idToken'))

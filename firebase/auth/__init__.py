@@ -380,7 +380,7 @@ class Auth:
 		:rtype: dict
 		"""
 
-		request_ref = "https://identitytoolkit.googleapis.com/v1/accounts:update?key={0}".format(self.api_key)
+		request_ref = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/setAccountInfo?key={0}".format(self.api_key)
 
 		headers = {"content-type": "application/json; charset=UTF-8"}
 		data = json.dumps({"idToken": id_token, "displayName": display_name, "photoURL": photo_url, "deleteAttribute": delete_attribute, "returnSecureToken": True})
