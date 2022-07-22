@@ -1,3 +1,17 @@
+## [0.4.9](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v0.4.8...v0.4.9) (2022-07-22)
+
+
+### Bug Fixes
+
+* **storage:** proper link generate with 𝘨𝘦𝘵_𝘶𝘳𝘭 ([c825c16](https://github.com/AsifArmanRahman/firebase-rest-api/commit/c825c1695f4a0e87d4daa467c2ca654a9cc05248))
+
+
+### Performance Improvements
+
+* **storage:** use 𝘳𝘦𝘲𝘶𝘦𝘴𝘵 param ([f51d0dc](https://github.com/AsifArmanRahman/firebase-rest-api/commit/f51d0dc52e030bfe867d70c7728c3ccc32dc4334))
+
+
+
 ## [0.4.8](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v0.4.7...v0.4.8) (2022-07-21)
 
 
