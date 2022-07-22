@@ -13,7 +13,6 @@ A simple python wrapper for Google's `Firebase Cloud Storage REST API`_
 """
 
 import datetime
-import requests
 from gcloud import storage
 from urllib.parse import quote
 
@@ -210,7 +209,7 @@ class Storage:
 
 		elif token:
 			headers = {"Authorization": "Firebase " + token}
-			r = requests.get(self.get_url(token), stream=True, headers=headers)
+			r = self.requests.get(self.get_url(token), stream=True, headers=headers)
 
 			if r.status_code == 200:
 				with open(filename, 'wb') as f:
@@ -218,7 +217,7 @@ class Storage:
 						f.write(chunk)
 
 		else:
-			r = requests.get(self.get_url(token), stream=True)
+			r = self.requests.get(self.get_url(token), stream=True)
 
 			if r.status_code == 200:
 				with open(filename, 'wb') as f:
