@@ -42,6 +42,9 @@ def password():
 
 @pytest.fixture(scope='session')
 def storage():
-	# To make it easier to test, we keep the test restricted to firebase_tests
-	# Because of the current mutations on calls, we return it as a function.
+	return make_storage()
+
+
+@pytest.fixture(scope='session')
+def storage_admin():
 	return make_storage(service_account=True)

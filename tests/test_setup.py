@@ -37,6 +37,14 @@ def test_setup_db():
 
 
 def test_setup_storage():
+	storage = make_storage()
+
+	with pytest.raises(AttributeError) as exc_info:
+		storage.list_files()
+	assert 'bucket' in str(exc_info.value)
+
+
+def test_setup_storage_admin():
 	storage = make_storage(True)
 
 	assert storage.list_files()
