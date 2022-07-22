@@ -12,6 +12,7 @@ A simple python wrapper for Google's `Firebase Cloud Storage REST API`_
 	https://firebase.google.com/docs/reference/rest/storage/rest
 """
 
+import datetime
 import requests
 from gcloud import storage
 from urllib.parse import quote
@@ -224,26 +225,46 @@ class Storage:
 					for chunk in r:
 						f.write(chunk)
 
-	def get_url(self, token):
+	def get_url(self, token=None, expiration_hour=24):
 		""" Fetches URL for file.
 
 
 		:type token: str
-		:param token: Firebase Auth User ID Token.
+		:param token: (Optional) Firebase Auth User ID Token, defaults
+			to :data:`None`.
 
+		:type expiration_hour: int
+		:param expiration_hour: (Optional) time in ``hour`` for URL to
+			expire after, defaults to 24 hours. Works only for links
+			generated with admin credentials.
 
 		:return: URL for the file.
 		:rtype: str
 		"""
 
+		# reset path
 		path = self.path
 		self.path = None
 
+		# remove leading backlash
 		if path.startswith('/'):
 			path = path[1:]
 
-		if token:
-			return "{0}/o/{1}?alt=media&token={2}".format(self.storage_bucket, quote(path, safe=''), token)
+		if self.credentials:
+			blob = self.bucket.get_blob(path)
+			if blob:
+				return blob.generate_signed_url(datetime.timedelta(hours=expiration_hour), method='GET')
+
+		elif token:
+
+			# retrieve download tokens first
+			headers = {"Authorization": "Bearer " + token}
+			request_ref = "{0}/o/{1}".format(self.storage_bucket, quote(path, safe=''))
+			request_object = self.requests.get(request_ref, headers=headers)
+
+			raise_detailed_error(request_object)
+
+			return "{0}/o/{1}?alt=media&token={2}".format(self.storage_bucket, quote(path, safe=''), request_object.json()['downloadTokens'])
 
 		return "{0}/o/{1}?alt=media".format(self.storage_bucket, quote(path, safe=''))
 
