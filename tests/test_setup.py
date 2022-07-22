@@ -10,9 +10,10 @@ import pytest
 from tests.tools import initiate_app_with_service_account_file, make_auth, make_db, make_storage
 
 
-@pytest.mark.xfail
 def test_initiate_app_with_service_account_file():
-	assert initiate_app_with_service_account_file()
+	with pytest.raises(FileNotFoundError) as exc_info:
+		initiate_app_with_service_account_file()
+	assert "No such file or directory: 'firebase-adminsdk.json'" in str(exc_info.value)
 
 
 def test_setup_auth():
