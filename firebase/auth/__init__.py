@@ -371,10 +371,9 @@ class Auth:
 		:param photo_url: User's new photo url.
 
 		:type delete_attribute: list[str] or None
-		:param delete_attribute: List of attributes
-
-			to delete, "DISPLAY_NAME" or "PHOTO_URL". This will nullify
-			these values.
+		:param delete_attribute: List of attributes to delete,
+			"DISPLAY_NAME" or "PHOTO_URL". This will nullify these
+			values.
 
 		:return: UserInfo and Firebase Auth Tokens.
 		:rtype: dict
