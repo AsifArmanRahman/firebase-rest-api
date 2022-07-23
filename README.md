@@ -75,5 +75,5 @@ storage = app.storage()
 file_path = 'static/img/example.png'
 
 # Store file to Firebase Storage
-storage.child(user.get('email')).child('uploaded-picture.png').put(file_path, user.get('idToken'))
+storage.child(user.get('localId')).child('uploaded-picture.png').put(file_path, user.get('idToken'))
 ```
