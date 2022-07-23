@@ -33,8 +33,9 @@ class Auth:
 	:param requests: Session to make HTTP requests
 
 	:type client_secret: str or dict
-	:param client_secret: (Optional) Dict object from social client
-		secret file, defaults to :data:`None`.
+	:param client_secret: (Optional) File path to or the dict object
+		from social client secret file, defaults to :data:`None`.
+
 	"""
 
 	def __init__(self, api_key, credentials, requests, client_secret=None):
@@ -49,7 +50,7 @@ class Auth:
 		self.session_id = None
 
 		if client_secret:
-			self.client_secret = client_secret
+			self.client_secret = _load_client_secret(client_secret)
 
 	def create_authentication_uri(self, provider_id):
 		""" Creates an authentication URI for the given social
@@ -446,3 +447,22 @@ class Auth:
 		raise_detailed_error(request_object)
 
 		return request_object.json()
+
+
+def _load_client_secret(secret):
+	""" Load social providers' client secret from file if file path
+	provided.
+
+	:type secret: str or dict
+	:param secret: File path to or the dict object from social client
+		secret file.
+
+	:return: social client secret
+	:rtype: dict
+	"""
+
+	if type(secret) is str:
+		with open(secret) as file:
+			secret = json.load(file)
+
+	return secret

@@ -56,8 +56,10 @@ class Firebase:
 		instance.
 
 		:type client_secret: str or dict
-		:param client_secret: (Optional) Dict object from social
-			client secret file, defaults to :data:`None`.
+		:param client_secret: (Optional) File path to or the dict
+			object from social client secret file, defaults to
+			:data:`None`.
+
 
 		:return: A newly initialized instance of Auth.
 		:rtype: Auth
