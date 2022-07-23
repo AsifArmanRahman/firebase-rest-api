@@ -31,9 +31,13 @@ class Auth:
 
 	:type requests: :class:`~requests.Session`
 	:param requests: Session to make HTTP requests
+
+	:type client_secret: str or dict
+	:param client_secret: (Optional) Dict object from social client
+		secret file, defaults to :data:`None`.
 	"""
 
-	def __init__(self, api_key, credentials, requests):
+	def __init__(self, api_key, credentials, requests, client_secret=None):
 		""" Constructor method """
 
 		self.api_key = api_key
@@ -41,6 +45,60 @@ class Auth:
 		self.requests = requests
 
 		self.current_user = None
+		self.provider_id = None
+		self.session_id = None
+
+		if client_secret:
+			self.client_secret = client_secret
+
+	def create_authentication_uri(self, provider_id):
+		""" Creates an authentication URI for the given social
+		provider.
+
+		| For more details:
+		| |section-fetch-providers-for-email|_
+
+		.. |section-fetch-providers-for-email| replace::
+			Firebase Auth REST API | Fetch providers for email
+
+		.. _section-fetch-providers-for-email:
+			https://firebase.google.com/docs/reference/rest/auth#section-fetch-providers-for-email
+
+
+		:type provider_id: str
+		:param provider_id: The IdP ID. For white listed IdPs it's a
+			short domain name e.g. 'google.com', 'aol.com', 'live.net'
+			and 'yahoo.com'. For other OpenID IdPs it's the OP
+			identifier.
+
+
+		:return: The URI used by the IDP to authenticate the user.
+		:rtype: str
+		"""
+
+		request_ref = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/createAuthUri?key={0}".format(self.api_key)
+
+		data = {
+			"authFlowType": 'CODE_FLOW',
+			"clientId": self.client_secret['client_id'],
+			"providerId": provider_id,
+			"continueUri": self.client_secret['redirect_uris'][0],
+			"customParameter": {
+				"access_type": 'offline',
+				"prompt": 'select_account',
+				"include_granted_scopes": 'true',
+			}
+		}
+
+		headers = {"content-type": "application/json; charset=UTF-8"}
+		request_object = self.requests.post(request_ref, headers=headers, json=data)
+
+		raise_detailed_error(request_object)
+
+		self.provider_id = provider_id
+		self.session_id = request_object.json()['sessionId']
+
+		return request_object.json()['authUri']
 
 	def sign_in_with_email_and_password(self, email, password):
 		""" Sign in a user with an email and password.

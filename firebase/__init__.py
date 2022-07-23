@@ -51,15 +51,19 @@ class Firebase:
 		if config.get("serviceAccount"):
 			self.credentials = _service_account_creds_from_secret(config['serviceAccount'])
 
-	def auth(self):
+	def auth(self, client_secret=None):
 		"""Initializes and returns a new Firebase Authentication
 		instance.
+
+		:type client_secret: str or dict
+		:param client_secret: (Optional) Dict object from social
+			client secret file, defaults to :data:`None`.
 
 		:return: A newly initialized instance of Auth.
 		:rtype: Auth
 		"""
 
-		return Auth(self.api_key, self.credentials, self.requests)
+		return Auth(self.api_key, self.credentials, self.requests, client_secret=client_secret)
 
 	def database(self):
 		"""Initializes and returns a new Firebase Realtime Database
