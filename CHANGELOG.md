@@ -1,3 +1,12 @@
+# [0.5.0](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v0.4.9...v0.5.0) (2022-07-23)
+
+
+### Features
+
+* **auth:** add 𝘤𝘳𝘦𝘢𝘵𝘦_𝘢𝘶𝘵𝘩𝘦𝘯𝘵𝘪𝘤𝘢𝘵𝘪𝘰𝘯_𝘶𝘳𝘪 method ([b45a7f2](https://github.com/AsifArmanRahman/firebase-rest-api/commit/b45a7f203b0e4369bd501831ffca9f26c3eac464))
+
+
+
 ## [0.4.9](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v0.4.8...v0.4.9) (2022-07-22)
 
 
