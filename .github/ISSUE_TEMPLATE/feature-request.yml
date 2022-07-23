@@ -1,0 +1,53 @@
+name: 🚀 Feature request
+description: Suggest an idea for this library.
+title: "[Feature]: <title>"
+labels: ['enhancement']
+
+body:
+
+    -   type: markdown
+        attributes:
+            value: |
+                Thanks for stopping by to let us know something could be better!
+                
+                Please complete the below form to ensure we have all the details to get things started.
+                <br>
+
+    -   type: textarea
+        attributes:
+            label: Is your proposal related to a problem?
+            description: |
+                Provide a clear and concise description of what the problem is.
+            placeholder: |
+                I'm always frustrated when...
+            render: markdown
+        validations:
+            required: true
+
+    -   type: textarea
+        attributes:
+            label: Describe the solution you'd like.
+            description: |
+                Provide a clear and concise description of what you want to happen.
+            render: markdown
+        validations:
+            required: true
+
+    -   type: textarea
+        attributes:
+            label: Describe alternatives you've considered.
+            description: |
+                Let us know about other solutions you've tried or researched.
+            render: markdown
+        validations:
+            required: false
+
+    -   type: textarea
+        attributes:
+            label: Additional context.
+            description: |
+                Is there anything else you can add about the proposal?
+                You might want to link to related issues here, if you haven't already.
+            render: markdown
+        validations:
+            required: false
