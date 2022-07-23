@@ -1,0 +1,10 @@
+blank_issues_enabled: false
+
+contact_links:
+    -   name: Discussion (Q&A)
+        url: https://github.com/AsifArmanRahman/firebase-rest-api/discussions/categories/q-a
+        about: Please ask and answer questions here.
+
+    -   name: GitHub Security Bug Bounty
+        url: https://bounty.github.com/
+        about: Please report security vulnerabilities here.
