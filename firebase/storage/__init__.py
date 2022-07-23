@@ -257,7 +257,7 @@ class Storage:
 		elif token:
 
 			# retrieve download tokens first
-			headers = {"Authorization": "Bearer " + token}
+			headers = {"Authorization": "Firebase " + token}
 			request_ref = "{0}/o/{1}".format(self.storage_bucket, quote(path, safe=''))
 			request_object = self.requests.get(request_ref, headers=headers)
 
