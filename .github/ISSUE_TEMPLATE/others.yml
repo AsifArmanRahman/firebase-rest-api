@@ -1,0 +1,27 @@
+name: Other
+description: Use this for any other issues.
+title: "[Other]: <title>"
+
+body:
+    -   type: markdown
+        id: greet
+        attributes:
+            value: |
+                Thanks for stopping by to let us know something could be better!
+                <br>
+
+    -   type: textarea
+        id: issue_description
+        attributes:
+            label: What would you like to share?
+            description: Provide a clear and concise explanation of your issue.
+        validations:
+            required: true
+
+    -   type: textarea
+        id: extrainfo
+        attributes:
+            label: Additional information
+            description: Is there anything else we should know about this issue?
+        validations:
+            required: false
