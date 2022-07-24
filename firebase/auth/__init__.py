@@ -412,6 +412,47 @@ class Auth:
 
 		return request_object.json()
 
+	def sign_in_with_oauth_credential(self, token):
+		""" Sign In With OAuth credential.
+
+		| For more details:
+		| |section-sign-in-with-oauth-credential|_
+
+		.. |section-sign-in-with-oauth-credential| replace::
+			Firebase Auth REST API | Sign in with OAuth credential
+
+		.. _section-sign-in-with-oauth-credential:
+			https://firebase.google.com/docs/reference/rest/auth#section-sign-in-with-oauth-credential
+
+
+		:type token: dict
+		:param token: The OAuth credential (an ID token or access 
+			token).
+
+		:return: User account info and Firebase Auth Tokens.
+		:rtype: dict
+		"""
+
+		request_ref = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyAssertion?key={0}".format(self.api_key)
+
+		data = {
+			'postBody': 'providerId={0}&{1}={2}'.format(self.provider_id, token['type'], token['value']),
+			'autoCreate': 'true',
+			'requestUri': self.client_secret['redirect_uris'][0],
+			'sessionId': self.session_id,
+			'returnSecureToken': 'true',
+			'returnRefreshToken': 'true',
+			'returnIdpCredential': 'false',
+		}
+
+		headers = {"content-type": "application/json; charset=UTF-8"}
+		request_object = self.requests.post(request_ref, headers=headers, json=data)
+
+		raise_detailed_error(request_object)
+		self.current_user = request_object.json()
+
+		return request_object.json()
+
 	def update_profile(self, id_token, display_name=None, photo_url=None, delete_attribute=None):
 		""" Update a user's profile (display name / photo URL).
 
