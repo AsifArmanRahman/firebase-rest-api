@@ -1,3 +1,13 @@
+# [0.6.0](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v0.5.0...v0.6.0) (2022-07-24)
+
+
+### Features
+
+* **auth:** add 𝘴𝘪𝘨𝘯_𝘪𝘯_𝘸𝘪𝘵𝘩_𝘰𝘢𝘶𝘵𝘩_𝘤𝘳𝘦𝘥𝘦𝘯𝘵𝘪𝘢𝘭 ([ad211a5](https://github.com/AsifArmanRahman/firebase-rest-api/commit/ad211a5bc3c9deddbe8441ff524d0008e0eb19a7))
+* **auth:** client secret from file ([e5ea84e](https://github.com/AsifArmanRahman/firebase-rest-api/commit/e5ea84ed1a54246fe5a0709b7eafaaf7dd0aeb2c))
+
+
+
 # [0.5.0](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v0.4.9...v0.5.0) (2022-07-23)
 
 
