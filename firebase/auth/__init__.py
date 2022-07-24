@@ -53,6 +53,15 @@ class Auth:
 		if client_secret:
 			self.client_secret = _load_client_secret(client_secret)
 
+	def authenticate_login_with_google(self):
+		""" Redirect the user to Google's OAuth 2.0 server to initiate 
+		the authentication and authorization process.
+
+		:return: Google Sign In URL
+		:rtype: str
+		"""
+		return self.create_authentication_uri('google.com')
+
 	def create_authentication_uri(self, provider_id):
 		""" Creates an authentication URI for the given social
 		provider.
@@ -531,6 +540,10 @@ def _load_client_secret(secret):
 	""" Load social providers' client secret from file if file path
 	provided.
 
+	This function also restructures the dict object to make it
+	compatible for usage.
+
+
 	:type secret: str or dict
 	:param secret: File path to or the dict object from social client
 		secret file.
@@ -542,5 +555,9 @@ def _load_client_secret(secret):
 	if type(secret) is str:
 		with open(secret) as file:
 			secret = json.load(file)
+
+	# Google client secrets are stored within 'web' key
+	# We will remove the key, and replace it with the dict type value of it
+	secret = secret['web']
 
 	return secret
