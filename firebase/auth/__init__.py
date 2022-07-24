@@ -16,6 +16,7 @@ import json
 import datetime
 import python_jwt as jwt
 import jwcrypto.jwk as jwk
+from urllib.parse import parse_qs
 
 from firebase._exception import raise_detailed_error
 
@@ -412,7 +413,7 @@ class Auth:
 
 		return request_object.json()
 
-	def sign_in_with_oauth_credential(self, token):
+	def sign_in_with_oauth_credential(self, oauth2callback_url):
 		""" Sign In With OAuth credential.
 
 		| For more details:
@@ -425,9 +426,9 @@ class Auth:
 			https://firebase.google.com/docs/reference/rest/auth#section-sign-in-with-oauth-credential
 
 
-		:type token: dict
-		:param token: The OAuth credential (an ID token or access 
-			token).
+		:type oauth2callback_url: str
+		:param oauth2callback_url: The URL redirected to after
+			successful authorization from the provider.
 
 		:return: User account info and Firebase Auth Tokens.
 		:rtype: dict
@@ -435,6 +436,7 @@ class Auth:
 
 		request_ref = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyAssertion?key={0}".format(self.api_key)
 
+		token = self._token_from_auth_url(oauth2callback_url)
 		data = {
 			'postBody': 'providerId={0}&{1}={2}'.format(self.provider_id, token['type'], token['value']),
 			'autoCreate': 'true',
@@ -452,6 +454,41 @@ class Auth:
 		self.current_user = request_object.json()
 
 		return request_object.json()
+
+	def _token_from_auth_url(self, url):
+		""" Fetch tokens using the authorization code from given URL.
+
+
+		:type url: str
+		:param url: The URL redirected to after successful
+			authorization from the provider.
+
+
+		:return: The OAuth credential (an ID token).
+		:rtype: dict
+		"""
+
+		request_ref = 'https://www.googleapis.com/oauth2/v4/token'
+
+		auth_url_values = parse_qs(url[url.index('?') + 1:])
+
+		data = {
+			'client_id': self.client_secret['client_id'],
+			'client_secret': self.client_secret['client_secret'],
+			'code': auth_url_values['code'][0],
+			'grant_type': 'authorization_code',
+			'redirect_uri': self.client_secret['redirect_uris'][0],
+		}
+
+		headers = {"content-type": "application/x-www-form-urlencoded; charset=UTF-8"}
+		request_object = self.requests.post(request_ref, headers=headers, data=data)
+
+		raise_detailed_error(request_object)
+
+		return {
+			'type': 'id_token',
+			'value': request_object.json()['id_token'],
+		}
 
 	def update_profile(self, id_token, display_name=None, photo_url=None, delete_attribute=None):
 		""" Update a user's profile (display name / photo URL).
