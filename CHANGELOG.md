@@ -1,3 +1,13 @@
+# [0.7.0](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v0.6.0...v0.7.0) (2022-07-24)
+
+
+### Features
+
+* **auth:** add _𝘵𝘰𝘬𝘦𝘯_𝘧𝘳𝘰𝘮_𝘢𝘶𝘵𝘩_𝘶𝘳𝘭 method ([e444135](https://github.com/AsifArmanRahman/firebase-rest-api/commit/e444135a9d1107383405717029ccd0aab82f1f70))
+* **auth:** Sign In with Google ([be6cb05](https://github.com/AsifArmanRahman/firebase-rest-api/commit/be6cb0551fc271cb3ae818de6f06137bbf44139d))
+
+
+
 # [0.6.0](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v0.5.0...v0.6.0) (2022-07-24)
 
 
