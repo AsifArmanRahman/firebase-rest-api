@@ -2,7 +2,7 @@ Storage
 =======
 
 The storage service allows you to upload files (eg. text, image,
-video) to Firebase.
+video) to Firebase Storage.
 
 .. code-block:: python
 
