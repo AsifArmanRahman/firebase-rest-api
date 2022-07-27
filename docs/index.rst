@@ -101,6 +101,9 @@ Documentation contents
 
    guide/setup
    guide/firebase-rest-api
+   guide/authentication
+   guide/database
+   guide/storage
 
 .. toctree::
    :maxdepth: 2
