@@ -1,18 +1,36 @@
 Database
 ========
 
-You can build paths to your data by using the ``child()`` method.
+The database service allows you to run CRUD operations to your Firebase Realtime
+Database, and also perform complex queries while doing so.
 
 .. code-block:: python
 
+   # Create database instance
    db = firebaseApp.database()
-   db.child("users").child("Morty")
 ..
 
    .. note::
       Each of the following methods accepts a user token:
-      ``get()``, ``push()``, ``set()``, ``update()``,
-      ``remove()`` and ``stream()``.
+      :ref:`get()<guide/database:get>`, :ref:`push()<guide/database:push>`,
+      :ref:`set()<guide/database:set>`, :ref:`update()<guide/database:update>`,
+      :ref:`remove()<guide/database:remove>` and
+      :ref:`stream()<guide/database:streaming>`.
+
+
+Build Path
+----------
+
+You can build paths to your data by using the ``child()`` method.
+
+.. code-block:: python
+
+   db.child("users").child("Edward")
+
+   # Alternate ways
+   db.child("users", "Edward")
+   db.child("users/Edward")
+..
 
 
 Save Data
@@ -27,7 +45,7 @@ To save data with a unique, auto-generated, timestamp-based key, use the
 
 .. code-block:: python
 
-   data = {"name": "Mortimer 'Morty' Smith"}
+   data = {"name": "Anthony 'Edward' Stark"}
    db.child("users").push(data)
 ..
 
@@ -39,8 +57,8 @@ below is "Morty".
 
 .. code-block:: python
 
-   data = {"name": "Mortimer 'Morty' Smith"}
-   db.child("users").child("Morty").set(data)
+   data = {"name": "Anthony 'Edward' Stark"}
+   db.child("users").child("Edward").set(data)
 ..
 
 update
@@ -50,7 +68,7 @@ To update data for an existing entry use the ``update()`` method.
 
 .. code-block:: python
 
-   db.child("users").child("Morty").update({"name": "Mortiest Morty"})
+   db.child("users").child("Edward").update({"name": "Tony Stark"})
 ..
 
 remove
@@ -60,7 +78,7 @@ To delete data for an existing entry use the ``remove()`` method.
 
 .. code-block:: python
 
-   db.child("users").child("Morty").remove()
+   db.child("users").child("Edward").remove()
 ..
 
 multi-location updates
@@ -73,11 +91,11 @@ with the ``update()`` method.
 .. code-block:: python
 
    data = {
-       "users/Morty/": {
-           "name": "Mortimer 'Morty' Smith"
+       "users/Edward/": {
+           "name": "Anthony 'Edward' Stark"
        },
-       "users/Rick/": {
-           "name": "Rick Sanchez"
+       "users/Pepper/": {
+           "name": "Virginia 'Pepper' Potts"
        }
    }
 
@@ -91,10 +109,10 @@ To perform multi-location writes to new locations we can use the
 
    data = {
        "users/"+ref.generate_key(): {
-           "name": "Mortimer 'Morty' Smith"
+           "name": "Anthony 'Edward' Stark"
        },
        "users/"+ref.generate_key(): {
-           "name": "Rick Sanchez"
+           "name": "Virginia 'Pepper' Potts"
        }
    }
 
@@ -105,28 +123,14 @@ To perform multi-location writes to new locations we can use the
 Retrieve Data
 -------------
 
-
-val
+get
 ^^^
 
-Queries return a PyreResponse object. Calling ``val()`` on these objects
-returns the query data.
+To return data from a path simply call the ``get()`` method.
 
 .. code-block:: python
 
    users = db.child("users").get()
-   print(users.val()) # {"Morty": {"name": "Mortimer 'Morty' Smith"}, "Rick": {"name": "Rick Sanchez"}}
-..
-
-key
-^^^
-
-Calling ``key()`` returns the key for the query data.
-
-.. code-block:: python
-
-   user = db.child("users").get()
-   print(user.key()) # users
 ..
 
 each
@@ -137,21 +141,50 @@ Returns a list of objects on each of which you can call ``val()`` and
 
 .. code-block:: python
 
-   all_users = db.child("users").get()
-   for user in all_users.each():
-       print(user.key()) # Morty
-       print(user.val()) # {name": "Mortimer 'Morty' Smith"}
+   users = db.child("users").get()
+   for user in users.each():
+       print(user.key(), user.val())
+
+   # Output:
+   # Edward {name": "Anthony 'Edward' Stark"}
+   # Pepper {'name': "Virginia 'Pepper' Potts"}
 ..
 
-get
+
+val
 ^^^
 
-To return data from a path simply call the ``get()`` method.
+Queries return a PyreResponse object. Calling ``val()`` on these objects
+returns the query data.
 
 .. code-block:: python
 
-   all_users = db.child("users").get()
+   users = db.child('users').child('Edward').get()
+
+   for user in users.each():
+      print(user.val())
+
+   # Output:
+   # {'name': "Anthony 'Edward' Stark"}
 ..
+
+key
+^^^
+
+Calling ``key()`` returns the key for the query data.
+
+.. code-block:: python
+
+   users = db.child("users").get()
+
+   for user in users.each():
+      print(user.key())
+
+   # Output:
+   # Edward
+   # Pepper
+..
+
 
 Conditional Requests
 ^^^^^^^^^^^^^^^^^^^^
@@ -167,9 +200,9 @@ conditional request.
 
 .. code-block:: python
 
-   etag = db.child("users").child("Morty").get_etag()
-   data = {"name": "Mortimer 'Morty' Smith"}
-   db.child("users").child("Morty").conditional_set(data, etag)
+   etag = db.child("users").child("Edward").get_etag()
+   data = {"name": "Tony Stark"}
+   db.child("users").child("Edward").conditional_set(data, etag)
 ..
 
 If the passed ETag does not match the ETag of the path in the database,
@@ -187,8 +220,8 @@ successful:
 
 .. code-block:: python
 
-   etag = db.child("users").child("Morty").get_etag()
-   response = db.child("users").child("Morty").conditional_remove(etag)
+   etag = db.child("users").child("Edward").get_etag()
+   response = db.child("users").child("Edward").conditional_remove(etag)
 
    if "ETag" in response:
        etag = response["ETag"] # our ETag was out-of-date
