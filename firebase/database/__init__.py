@@ -17,6 +17,7 @@ import json
 import time
 from random import randrange
 from urllib.parse import urlencode
+from google.auth.transport.requests import Request
 
 from ._stream import Stream
 from ._db_convert import FirebaseResponse
@@ -28,8 +29,7 @@ class Database:
 	""" Firebase Database Service
 
 
-	:type credentials:
-		:class:`~oauth2client.service_account.ServiceAccountCredentials`
+	:type credentials: :class:`~google.oauth2.service_account.Credentials`
 	:param credentials: Service Account Credentials.
 
 	:type database_url: str
@@ -337,7 +337,11 @@ class Database:
 		headers = {"content-type": "application/json; charset=UTF-8"}
 
 		if not token and self.credentials:
-			access_token = self.credentials.get_access_token().access_token
+
+			if not self.credentials.valid:
+				self.credentials.refresh(Request())
+
+			access_token = self.credentials.token
 			headers['Authorization'] = 'Bearer ' + access_token
 
 		return headers

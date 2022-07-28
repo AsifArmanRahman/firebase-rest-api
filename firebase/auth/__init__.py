@@ -27,7 +27,7 @@ class Auth:
 	:type api_key: str
 	:param api_key: ``apiKey`` from Firebase configuration
 
-	:type credentials: :class:`~oauth2client.service_account.ServiceAccountCredentials`
+	:type credentials: :class:`~google.oauth2.service_account.Credentials`
 	:param credentials: Service Account Credentials
 
 	:type requests: :class:`~requests.Session`

@@ -13,7 +13,7 @@ A simple python wrapper for Google's `Firebase Cloud Storage REST API`_
 """
 
 import datetime
-from gcloud import storage
+from google.cloud import storage
 from urllib.parse import quote
 
 from firebase._exception import raise_detailed_error
@@ -23,7 +23,7 @@ class Storage:
 	""" Firebase Cloud Storage Service 
 
 	:type credentials:
-		:class:`~oauth2client.service_account.ServiceAccountCredentials`
+		:class:`~google.oauth2.service_account.Credentials`
 	:param credentials: Service Account Credentials.
 
 	:type requests: :class:`~requests.Session`

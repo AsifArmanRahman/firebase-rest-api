@@ -56,7 +56,8 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {
-	'oauth2client': ("https://oauth2client.readthedocs.io/en/latest/", None),
+	'google': ("https://googleapis.dev/python/google-auth/latest/", None),
+	'google.cloud': ("https://googleapis.dev/python/storage/latest/", None),
 	'python': ("https://docs.python.org/3/", None),
 	'requests': ("https://requests.readthedocs.io/en/stable/", None),
 }
