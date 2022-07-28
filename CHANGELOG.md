@@ -1,3 +1,15 @@
+# [1.0.0](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v0.7.0...v1.0.0) (2022-07-28)
+
+
+* chore!: update dependencies ([2551fdd](https://github.com/AsifArmanRahman/firebase-rest-api/commit/2551fdd64ef1d1411d689f9d61e01588d6620312))
+
+
+### BREAKING CHANGES
+
+* dependency changed from deprecated libraries 𝐨𝐚𝐮𝐭𝐡𝟐𝐜𝐥𝐢𝐞𝐧𝐭 to 𝐠𝐨𝐨𝐠𝐥𝐞-𝐚𝐮𝐭𝐡 and 𝐠𝐜𝐥𝐨𝐮𝐝 to 𝐠𝐨𝐨𝐠𝐥𝐞-𝐜𝐥𝐨𝐮𝐝-𝐬𝐭𝐨𝐫𝐚𝐠𝐞
+
+
+
 # [0.7.0](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v0.6.0...v0.7.0) (2022-07-24)
 
 
