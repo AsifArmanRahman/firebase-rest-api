@@ -40,7 +40,7 @@ dependencies = [
 
   [[project.authors]]
   name = "Asif Arman Rahman"
-  email = "AsifArmanRahman@gmail.com"
+  email = "asifarmanrahman@gmail.com"
 
   [project.optional-dependencies]
   docs = [
