@@ -43,6 +43,13 @@ dependencies = [
   email = "asifarmanrahman@gmail.com"
 
   [project.optional-dependencies]
+  tests = [
+    "flit>=3.7.1",
+    "pytest>=7.1.2",
+    "pytest-cov>=3.0.0",
+    "python-decouple>=3.6"
+  ]
+
   docs = [
     "Sphinx>=5.0.2",
     "sphinx-rtd-theme>=1.0.0",
