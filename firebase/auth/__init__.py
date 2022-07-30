@@ -17,6 +17,7 @@ import datetime
 import python_jwt as jwt
 import jwcrypto.jwk as jwk
 from urllib.parse import parse_qs
+from cryptography.hazmat.primitives.serialization import Encoding, NoEncryption, PrivateFormat
 
 from firebase._exception import raise_detailed_error
 
@@ -190,7 +191,7 @@ class Auth:
 		"""
 
 		service_account_email = self.credentials.service_account_email
-		private_key = jwk.JWK.from_pem(self.credentials._private_key_pkcs8_pem.encode('utf-8'))
+		private_key = jwk.JWK.from_pem(self.credentials.signer._key.private_bytes(encoding=Encoding.PEM, format=PrivateFormat.PKCS8, encryption_algorithm=NoEncryption()))
 
 		payload = {
 			"iss": service_account_email,
@@ -204,7 +205,7 @@ class Auth:
 
 		exp = datetime.timedelta(minutes=expiry_minutes)
 
-		return jwt.generate_jwt(payload, private_key, "RS256", exp, other_headers={'kid': self.credentials._private_key_id})
+		return jwt.generate_jwt(payload, private_key, "RS256", exp, other_headers={'kid': self.credentials.signer._key_id})
 
 	def sign_in_with_custom_token(self, token):
 		""" Exchange custom token for an ID and refresh token.
