@@ -1,3 +1,12 @@
+## [1.0.1](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v1.0.0...v1.0.1) (2022-07-30)
+
+
+### Bug Fixes
+
+* **auth:** create_custom_token ([240ef7c](https://github.com/AsifArmanRahman/firebase-rest-api/commit/240ef7cd61119c52ea4c78271fa5e9201c1da618))
+
+
+
 # [1.0.0](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v0.7.0...v1.0.0) (2022-07-28)
 
 
