@@ -5,7 +5,7 @@
 [![Documentation Status](https://readthedocs.org/projects/firebase-rest-api/badge/?version=latest)](https://firebase-rest-api.readthedocs.io/en/latest/?badge=latest)
 [![codecov](https://codecov.io/gh/AsifArmanRahman/firebase-rest-api/branch/main/graph/badge.svg?token=N7TE1WVZ7W)](https://codecov.io/gh/AsifArmanRahman/firebase-rest-api)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/firebase-rest-api?logo=python&logoColor=informational)](https://pypi.org/project/firebase-rest-api/)
-[![PyPi version](https://badgen.net/pypi/v/firebase-rest-api/?icon=pypi&color=blue)](https://pypi.com/project/firebase-rest-api)
+[![PyPI](https://img.shields.io/pypi/v/firebase-rest-api?color=blue&logo=pypi&logoColor=white)](https://pypi.org/project/firebase-rest-api/)
 
 
 A simple python wrapper for [Google's Firebase REST API's](https://firebase.google.com).
