@@ -13,6 +13,7 @@ A simple python wrapper for Google's
 """
 
 import json
+import math
 import datetime
 import python_jwt as jwt
 import jwcrypto.jwk as jwk
@@ -47,7 +48,6 @@ class Auth:
 		self.credentials = credentials
 		self.requests = requests
 
-		self.current_user = None
 		self.provider_id = None
 		self.session_id = None
 
@@ -137,9 +137,8 @@ class Auth:
 		request_object = self.requests.post(request_ref, headers=headers, data=data)
 
 		raise_detailed_error(request_object)
-		self.current_user = request_object.json()
 
-		return request_object.json()
+		return _token_expire_time(request_object.json())
 
 	def sign_in_anonymous(self):
 		""" Sign In Anonymously.
@@ -160,9 +159,8 @@ class Auth:
 		request_object = self.requests.post(request_ref, headers=headers, data=data)
 
 		raise_detailed_error(request_object)
-		self.current_user = request_object.json()
 
-		return request_object.json()
+		return _token_expire_time(request_object.json())
 
 	def create_custom_token(self, uid, additional_claims=None, expiry_minutes=60):
 		""" Create a Firebase Auth custom token.
@@ -231,7 +229,7 @@ class Auth:
 
 		raise_detailed_error(request_object)
 
-		return request_object.json()
+		return _token_expire_time(request_object.json())
 
 	def refresh(self, refresh_token):
 		""" Refresh a Firebase ID token.
@@ -259,12 +257,13 @@ class Auth:
 
 		# handle weirdly formatted response
 		user = {
-			"userId": request_object_json["user_id"],
+			"localId": request_object_json["user_id"],
 			"idToken": request_object_json["id_token"],
-			"refreshToken": request_object_json["refresh_token"]
+			"refreshToken": request_object_json["refresh_token"],
+			"expiresIn": request_object_json["expires_in"]
 		}
 
-		return user
+		return _token_expire_time(user)
 
 	def get_account_info(self, id_token):
 		""" Fetch user's stored account information.
@@ -461,9 +460,8 @@ class Auth:
 		request_object = self.requests.post(request_ref, headers=headers, json=data)
 
 		raise_detailed_error(request_object)
-		self.current_user = request_object.json()
 
-		return request_object.json()
+		return _token_expire_time(request_object.json())
 
 	def _token_from_auth_url(self, url):
 		""" Fetch tokens using the authorization code from given URL.
@@ -562,3 +560,8 @@ def _load_client_secret(secret):
 	secret = secret['web']
 
 	return secret
+
+
+def _token_expire_time(user):
+	user['expiresAt'] = math.floor(datetime.datetime.today().timestamp() + int(user.get('expiresIn')) - 60)
+	return user
