@@ -563,5 +563,18 @@ def _load_client_secret(secret):
 
 
 def _token_expire_time(user):
+	""" Adds expire time of the token in the token dictionary.
+
+	For safety purposes, token is set to expire after 59mins instead
+	of an hour expiry time when received.
+
+	:type user: dict
+	:param user: The token dictionary received after signing in users.
+	
+	:return: Token dictionary with an ``expiresAt`` key.
+	:rtype: dict
+	"""
+	
 	user['expiresAt'] = math.floor(datetime.datetime.today().timestamp() + int(user.get('expiresIn')) - 60)
+	
 	return user
