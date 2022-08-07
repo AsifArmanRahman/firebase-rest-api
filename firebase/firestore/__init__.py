@@ -17,6 +17,7 @@ from proto.message import Message
 from google.cloud.firestore import Client
 from google.cloud.firestore_v1._helpers import *
 
+from ._utils import _from_datastore
 from firebase._exception import raise_detailed_error
 
 
@@ -193,6 +194,57 @@ class Document:
 				response = self._requests.delete(req_ref)
 
 			raise_detailed_error(response)
+
+	def get(self, field_paths=None, token=None):
+		""" Read data from a document in firestore.
+
+
+		:type field_paths: list
+		:param field_paths: (Optional) A list of field paths
+			(``.``-delimited list of field names) to filter data, and
+			return the filtered values only, defaults
+			to :data:`None`.
+
+		:type token: str
+		:param token: (Optional) Firebase Auth User ID Token, defaults
+			to :data:`None`.
+
+
+		:return: The whole data stored in the document unless filtered
+			to retrieve specific fields.
+		:rtype: dict
+		"""
+
+		path = self._path.copy()
+		self._path.clear()
+
+		if self._credentials:
+			db_ref = _build_db(self.__datastore, path)
+
+			result = db_ref.get(field_paths=field_paths)
+
+			return result.to_dict()
+
+		else:
+
+			mask = ''
+
+			if field_paths:
+				for field_path in field_paths:
+					mask = f"{mask}mask.fieldPaths={field_path}&"
+
+			req_ref = f"{self._base_url}/{'/'.join(path)}?{mask}key={self._api_key}"
+
+			if token:
+				headers = {"Authorization": "Firebase " + token}
+				response = self._requests.get(req_ref, headers=headers)
+
+			else:
+				response = self._requests.get(req_ref)
+
+			raise_detailed_error(response)
+
+			return _from_datastore(response.json())
 
 	def set(self, data, token=None):
 		""" Add data to a document in firestore.
