@@ -19,6 +19,9 @@ class TestFirestoreAdmin:
 	def test_manual_doc_set(self, ds_admin):
 		assert ds_admin.collection('Marvels').document('Movies').set(self.__class__.movies) is None
 
+	def test_manual_doc_delete(self, ds_admin):
+		assert ds_admin.collection('Marvels').document('Movies').delete() is None
+
 
 class TestFirestoreAuth:
 	movies = {
@@ -41,6 +44,9 @@ class TestFirestoreAuth:
 	def test_manual_doc_set(self, ds):
 		assert ds.collection('Marvels').document('Movies').set(self.__class__.movies, token=self.__class__.user.get('idToken')) is None
 
+	def test_manual_doc_delete(self, ds):
+		assert ds.collection('Marvels').document('Movies').delete(self.__class__.user.get('idToken')) is None
+
 	def test_delete_test_user(self, auth):
 		assert auth.delete_user_account(self.__class__.user.get('idToken'))
 
@@ -58,3 +64,6 @@ class TestFirestore:
 
 	def test_manual_doc_set(self, ds):
 		assert ds.collection('Marvels').document('Series').set(self.__class__.series) is None
+
+	def test_manual_doc_delete(self, ds):
+		assert ds.collection('Marvels').document('Series').delete() is None
