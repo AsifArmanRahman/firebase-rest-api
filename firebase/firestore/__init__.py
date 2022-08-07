@@ -156,6 +156,44 @@ class Document:
 		self._path.append(collection_id)
 		return Collection(self._path, api_key=self._api_key, credentials=self._credentials, project_id=self._project_id, requests=self._requests)
 
+	def delete(self, token=None):
+		""" Deletes the current document from firestore.
+
+		| For more details:
+		| |delete_documents|_
+
+		.. |delete_documents| replace::
+			Firebase Documentation | Delete data from Cloud
+			Firestore | Delete documents
+
+		.. _delete_documents:
+			https://firebase.google.com/docs/firestore/manage-data/delete-data#delete_documents
+
+		:type token: str
+		:param token: (Optional) Firebase Auth User ID Token, defaults
+			to :data:`None`.
+		"""
+
+		path = self._path.copy()
+		self._path.clear()
+
+		if self._credentials:
+			db_ref = _build_db(self.__datastore, path)
+
+			db_ref.delete()
+
+		else:
+			req_ref = f"{self._base_url}/{'/'.join(path)}?key={self._api_key}"
+
+			if token:
+				headers = {"Authorization": "Firebase " + token}
+				response = self._requests.delete(req_ref, headers=headers)
+
+			else:
+				response = self._requests.delete(req_ref)
+
+			raise_detailed_error(response)
+
 	def set(self, data, token=None):
 		""" Add data to a document in firestore.
 
