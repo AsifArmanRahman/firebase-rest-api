@@ -32,6 +32,7 @@ classifiers = [
 ]
 dependencies = [
   "google-auth>=2.9.1",
+  "google-cloud-firestore>=2.5.3",
   "google-cloud-storage>=2.0.0",
   "python_jwt>=3.3.2",
   "requests>=2.27.1",
