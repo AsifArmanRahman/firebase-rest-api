@@ -7,4 +7,5 @@ API Reference
    firebase
    firebase.auth
    firebase.database
+   firebase.firestore
    firebase.storage

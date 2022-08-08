@@ -58,6 +58,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 intersphinx_mapping = {
 	'google': ("https://googleapis.dev/python/google-auth/latest/", None),
 	'google.cloud': ("https://googleapis.dev/python/storage/latest/", None),
+	'google.cloud.firestore': ("https://googleapis.dev/python/firestore/latest/", None),
 	'python': ("https://docs.python.org/3/", None),
 	'requests': ("https://requests.readthedocs.io/en/stable/", None),
 }
