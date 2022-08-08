@@ -4,7 +4,7 @@ build-backend = 'flit_core.buildapi'
 
 [project]
 name = "firebase-rest-api"
-version = "1.0.1"
+version = "1.4.0"
 readme = "README.md"
 description = "A simple python wrapper for Google's Firebase REST API's."
 requires-python = ">=3.6"
