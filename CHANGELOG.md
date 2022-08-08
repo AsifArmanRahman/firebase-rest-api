@@ -1,15 +1,3 @@
-# [1.1.0](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v1.0.1...v1.1.0) (2022-08-08)
-
-
-### Features
-
-* **firestore:** add delete() method ([ba00cc2](https://github.com/AsifArmanRahman/firebase-rest-api/commit/ba00cc2ab9f1c29cc5e1306d39b5efe6b28af20f))
-* **firestore:** add get() method ([dba57ea](https://github.com/AsifArmanRahman/firebase-rest-api/commit/dba57eab5dd1de1c5af22184cc6dead29fcb6d84))
-* **firestore:** add set() method ([c8198f2](https://github.com/AsifArmanRahman/firebase-rest-api/commit/c8198f2fc6bc4605a3a50bf23c7ac823acc59cd2))
-* **firestore:** add update() method ([e85c459](https://github.com/AsifArmanRahman/firebase-rest-api/commit/e85c459030441c413728e03a0646997e0fdc1a71))
-
-
-
 ## [1.0.1](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v1.0.0...v1.0.1) (2022-07-30)
 
 
