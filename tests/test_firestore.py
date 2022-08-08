@@ -22,6 +22,11 @@ class TestFirestoreAdmin:
 	def test_manual_doc_get(self, ds_admin):
 		assert ds_admin.collection('Marvels').document('Movies').get() == self.__class__.movies
 
+	def test_manual_doc_update(self, ds_admin):
+		update_data = {'released': True}
+		assert ds_admin.collection('Marvels').document('Movies').update(update_data) is None
+		assert ds_admin.collection('Marvels').document('Movies').get(field_paths=['released']) == update_data
+
 	def test_manual_doc_get_filtered(self, ds_admin):
 		assert ds_admin.collection('Marvels').document('Movies').get(field_paths=['name']) == {'name': self.__class__.movies['name']}
 
@@ -56,6 +61,11 @@ class TestFirestoreAuth:
 	def test_manual_doc_get_filtered(self, ds):
 		assert ds.collection('Marvels').document('Movies').get(field_paths=['name'], token=self.__class__.user.get('idToken')) == {'name': self.__class__.movies['name']}
 
+	def test_manual_doc_update(self, ds):
+		update_data = {'released': True}
+		assert ds.collection('Marvels').document('Movies').update(update_data, token=self.__class__.user.get('idToken')) is None
+		assert ds.collection('Marvels').document('Movies').get(field_paths=['released'], token=self.__class__.user.get('idToken')) == update_data
+
 	def test_manual_doc_delete(self, ds):
 		assert ds.collection('Marvels').document('Movies').delete(self.__class__.user.get('idToken')) is None
 
@@ -82,6 +92,11 @@ class TestFirestore:
 
 	def test_manual_doc_get_filtered(self, ds):
 		assert ds.collection('Marvels').document('Series').get(field_paths=['name']) == {'name': self.__class__.series['name']}
+
+	def test_manual_doc_update(self, ds):
+		update_data = {'released': True}
+		assert ds.collection('Marvels').document('Series').update(update_data) is None
+		assert ds.collection('Marvels').document('Series').get(field_paths=['released']) == update_data
 
 	def test_manual_doc_delete(self, ds):
 		assert ds.collection('Marvels').document('Series').delete() is None
