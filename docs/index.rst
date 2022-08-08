@@ -103,6 +103,7 @@ Documentation contents
    guide/firebase-rest-api
    guide/authentication
    guide/database
+   guide/firestore
    guide/storage
 
 .. toctree::
