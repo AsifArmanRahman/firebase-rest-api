@@ -295,6 +295,44 @@ class Document:
 
 			raise_detailed_error(response)
 
+	def update(self, data, token=None):
+		""" Update stored data inside a document in firestore.
+
+
+		:type data: dict
+		:param data: Data to be stored in firestore.
+
+		:type token: str
+		:param token: (Optional) Firebase Auth User ID Token, defaults
+			to :data:`None`.
+		"""
+
+		path = self._path.copy()
+		self._path.clear()
+
+		if self._credentials:
+			db_ref = _build_db(self.__datastore, path)
+
+			db_ref.update(data)
+
+		else:
+			req_ref = f"{self._base_url}:commit?key={self._api_key}"
+
+			body = {
+				"writes": [
+					Message.to_dict(pbs_for_update(f"{self._base_path}/{'/'.join(path)}", data, None)[0])
+				]
+			}
+
+			if token:
+				headers = {"Authorization": "Firebase " + token}
+				response = self._requests.post(req_ref, headers=headers, json=body)
+
+			else:
+				response = self._requests.post(req_ref, json=body)
+
+			raise_detailed_error(response)
+
 
 def _build_db(db, path):
 	""" Returns a reference to Collection/Document with admin
