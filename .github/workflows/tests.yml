@@ -51,6 +51,7 @@ jobs:
                     FIREBASE_API_KEY: ${{ secrets.FIREBASE_API_KEY }}
                     FIREBASE_AUTH_DOMAIN: ${{ secrets.FIREBASE_AUTH_DOMAIN }}
                     FIREBASE_DATABASE_URL: ${{ secrets.FIREBASE_DATABASE_URL }}
+                    FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
                     FIREBASE_STORAGE_BUCKET: ${{ secrets.FIREBASE_STORAGE_BUCKET }}
 
                     FIREBASE_SERVICE_ACCOUNT_PROJECT_ID: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_PROJECT_ID }}
