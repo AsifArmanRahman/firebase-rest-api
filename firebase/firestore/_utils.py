@@ -6,6 +6,8 @@
 
 
 from base64 import b64decode
+from google.cloud.firestore_v1._helpers import GeoPoint
+from google.api_core.datetime_helpers import DatetimeWithNanoseconds
 
 
 def _from_datastore(data):
@@ -79,6 +81,12 @@ def _decode_datastore(value):
 
 	elif value.get('mapValue'):
 		return _from_datastore(value['mapValue'])
+
+	elif value.get('timestampValue'):
+		return DatetimeWithNanoseconds.from_rfc3339(value['timestampValue'])
+
+	elif value.get('geoPointValue'):
+		return GeoPoint(float(value['timestampValue']['latitude']), float(value['timestampValue']['longitude']))
 
 	else:
 		raise TypeError("Cannot convert to a Python Value", value, "Invalid type", type(value))
