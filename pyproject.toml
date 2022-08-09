@@ -12,6 +12,7 @@ keywords = [
   "firebase",
   "firebase-auth",
   "firebase-database",
+  "firebase-firestore",
   "firebase-realtime-database",
   "firebase-storage",
 ]
