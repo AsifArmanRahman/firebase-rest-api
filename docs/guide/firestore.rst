@@ -56,7 +56,8 @@ the collection named ``Movies``, use  ``set()`` method.
 Read Data
 ---------
 
-To read data from an existing document of an collection, use ``get()`` method.
+To read data from an existing document ``Movies`` of the collection
+``Marvels``, use ``get()`` method.
 
 .. code-block:: python
 
@@ -76,6 +77,19 @@ It is possible to filter the data of an document to receive specific fields.
 ..
 
 
+
+To fetch data regarding all existing document (document ID and the data
+it contains) of an collection ``Marvels``, use ``get()`` method.
+
+.. code-block:: python
+
+   fsdb.collection('Marvels').get()
+..
+
+   .. note::
+      The ``get()`` method use after ``collection()`` method and
+      ``document()`` method are **NOT SAME**. They both accept and
+      return different type of values.
 
 Update Data
 -----------
