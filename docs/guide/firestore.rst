@@ -12,9 +12,7 @@ Database.
 
    .. note::
       Each of the following methods accepts a user token:
-      :ref:`get()<guide/firestore:get>`, :ref:`set()<guide/firestore:set>`,
-      :ref:`update()<guide/firestore:update>`, and
-      :ref:`delete()<guide/firestore:delete>`.
+      ``get()``,  ``set()``, ``update()``, and ``delete()``.
 
 
 Build Path
@@ -31,9 +29,6 @@ You can build paths to your data by using the ``collection()`` and ``document()`
 
 Save Data
 ---------
-
-set
-^^^
 
 To store data in a collection named ``Marvels`` and a document inside
 the collection named ``Movies``, use  ``set()`` method.
@@ -59,9 +54,6 @@ the collection named ``Movies``, use  ``set()`` method.
 Read Data
 ---------
 
-get
-^^^
-
 To read data from an existing document of an collection, use ``get()`` method.
 
 .. code-block:: python
@@ -83,9 +75,6 @@ It is possible to filter the data of an document to receive specific fields.
 
 Update Data
 -----------
-
-update
-^^^^^^
 
 To update existing data or add more data to an existing document, use
 ``update()`` method.
@@ -115,9 +104,6 @@ To update existing data or add more data to an existing document, use
 
 Delete Data
 -----------
-
-delete
-^^^^^^
 
 To remove an existing document in a collection, use ``delete()``
 method.
