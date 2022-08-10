@@ -90,6 +90,12 @@ class Collection:
 		self._project_id = project_id
 		self._requests = requests
 
+		self._base_path = f"projects/{self._project_id}/databases/(default)/documents"
+		self._base_url = f"https://firestore.googleapis.com/v1/{self._base_path}"
+
+		if self._credentials:
+			self.__datastore = Client(credentials=self._credentials, project=self._project_id)
+
 	def document(self, document_id):
 		""" A reference to a document in a collection.
 
@@ -104,6 +110,52 @@ class Collection:
 
 		self._path.append(document_id)
 		return Document(self._path, api_key=self._api_key, credentials=self._credentials, project_id=self._project_id, requests=self._requests)
+
+	def get(self, token=None):
+		""" Returns a list of dict's containing document ID and the
+		data stored within them.
+
+
+		:type token: str
+		:param token: (Optional) Firebase Auth User ID Token, defaults
+			to :data:`None`.
+
+
+		:return: A list of document ID's with the data they possess.
+		:rtype: list
+		"""
+
+		path = self._path.copy()
+		self._path.clear()
+
+		docs = []
+
+		if self._credentials:
+			db_ref = _build_db(self.__datastore, path)
+
+			results = db_ref.get()
+
+			for result in results:
+				docs.append({result.id: result.to_dict()})
+
+		else:
+
+			req_ref = f"{self._base_url}/{'/'.join(path)}?key={self._api_key}"
+
+			if token:
+				headers = {"Authorization": "Firebase " + token}
+				response = self._requests.get(req_ref, headers=headers)
+
+			else:
+				response = self._requests.get(req_ref)
+
+			raise_detailed_error(response)
+
+			for doc in response.json()['documents']:
+				doc_id = doc['name'].split('/')
+				docs.append({doc_id.pop(): _from_datastore({'fields': doc['fields']})})
+
+		return docs
 
 
 class Document:
