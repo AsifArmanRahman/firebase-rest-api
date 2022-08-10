@@ -22,6 +22,9 @@ class TestFirestoreAdmin:
 	def test_manual_doc_get(self, ds_admin):
 		assert ds_admin.collection('Marvels').document('Movies').get() == self.__class__.movies
 
+	def test_collection_get(self, ds_admin):
+		assert ds_admin.collection('Marvels').get() == [{'Movies': self.__class__.movies}]
+
 	def test_manual_doc_update(self, ds_admin):
 		update_data = {'released': True}
 		assert ds_admin.collection('Marvels').document('Movies').update(update_data) is None
@@ -58,6 +61,9 @@ class TestFirestoreAuth:
 	def test_manual_doc_get(self, ds):
 		assert ds.collection('Marvels').document('Movies').get(token=self.__class__.user.get('idToken')) == self.__class__.movies
 
+	def test_collection_get(self, ds):
+		assert ds.collection('Marvels').get(token=self.__class__.user.get('idToken')) == [{'Movies': self.__class__.movies}]
+
 	def test_manual_doc_get_filtered(self, ds):
 		assert ds.collection('Marvels').document('Movies').get(field_paths=['name'], token=self.__class__.user.get('idToken')) == {'name': self.__class__.movies['name']}
 
@@ -89,6 +95,9 @@ class TestFirestore:
 
 	def test_manual_doc_get(self, ds):
 		assert ds.collection('Marvels').document('Series').get() == self.__class__.series
+
+	def test_collection_get(self, ds):
+		assert ds.collection('Marvels').get() == [{'Series': self.__class__.series}]
 
 	def test_manual_doc_get_filtered(self, ds):
 		assert ds.collection('Marvels').document('Series').get(field_paths=['name']) == {'name': self.__class__.series['name']}
