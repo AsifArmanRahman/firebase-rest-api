@@ -40,7 +40,9 @@ the collection named ``Movies``, use  ``set()`` method.
       "lead": {
          "name": "Robert Downey Jr."
       },
+      'cast': ['Gwyneth Paltrow']
       'released': False,
+      'prequel': None
    }
 
    fsdb.collection('Marvels').document('Movies').set(data)
@@ -61,6 +63,8 @@ To read data from an existing document of an collection, use ``get()`` method.
    fsdb.collection('Marvels').document('Movies').get()
 ..
 
+
+
 It is possible to filter the data of an document to receive specific fields.
 
 .. code-block:: python
@@ -76,8 +80,7 @@ It is possible to filter the data of an document to receive specific fields.
 Update Data
 -----------
 
-To update existing data or add more data to an existing document, use
-``update()`` method.
+To add more data to an existing document, use ``update()`` method.
 
 .. code-block:: python
 
@@ -89,6 +92,10 @@ To update existing data or add more data to an existing document, use
 
    fsdb.collection('Marvels').document('Movies').update(data)
 ..
+
+
+
+To update existing data to an existing document, use ``update()`` method.
 
 .. code-block:: python
 
@@ -102,8 +109,52 @@ To update existing data or add more data to an existing document, use
 ..
 
 
+
+To add an item to an array field in an existing document, use
+``update()`` method.
+
+.. code-block:: python
+
+   from google.cloud.firestore import ArrayUnion
+   data = {
+      'cast': ArrayUnion(['Terrence Howard'])
+   }
+
+   fsdb.collection('Marvels').document('Movies').update(data)
+..
+
+
 Delete Data
 -----------
+
+To remove an field from an existing document, use ``update()`` method.
+
+.. code-block:: python
+
+   from google.cloud.firestore import DELETE_FIELD
+   data = {
+      'prequel': DELETE_FIELD
+   }
+
+   fsdb.collection('Marvels').document('Movies').update(data)
+..
+
+
+
+To remove an item to an array field in an existing document, use
+``update()`` method.
+
+.. code-block:: python
+
+   from google.cloud.firestore import ArrayRemove
+   data = {
+      'cast': ArrayRemove(['Terrence Howard'])
+   }
+
+   fsdb.collection('Marvels').document('Movies').update(data)
+..
+
+
 
 To remove an existing document in a collection, use ``delete()``
 method.
