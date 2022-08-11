@@ -1,3 +1,12 @@
+# [1.5.0](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v1.4.0...v1.5.0) (2022-08-11)
+
+
+### Features
+
+* **firestore:** add get method for collection ([7d9a193](https://github.com/AsifArmanRahman/firebase-rest-api/commit/7d9a19379914235be423bf36e208031fac28f48b))
+
+
+
 # [1.4.0](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v1.0.1...v1.4.0) (2022-08-08)
 
 
@@ -7,6 +16,12 @@
 * **firestore:** add get() method ([dba57ea](https://github.com/AsifArmanRahman/firebase-rest-api/commit/dba57eab5dd1de1c5af22184cc6dead29fcb6d84))
 * **firestore:** add set() method ([c8198f2](https://github.com/AsifArmanRahman/firebase-rest-api/commit/c8198f2fc6bc4605a3a50bf23c7ac823acc59cd2))
 * **firestore:** add update() method ([e85c459](https://github.com/AsifArmanRahman/firebase-rest-api/commit/e85c459030441c413728e03a0646997e0fdc1a71))
+
+
+### Reverts
+
+* Revert "release: v1.0.2" ([4ce29e9](https://github.com/AsifArmanRahman/firebase-rest-api/commit/4ce29e92e3de0bdb1170ffa7ab2afdaf2bf16141))
+* Revert "release: v1.1.0" ([55d3619](https://github.com/AsifArmanRahman/firebase-rest-api/commit/55d361920613bba9f2723784c39d6b3ce63c1ad1))
 
 
 
