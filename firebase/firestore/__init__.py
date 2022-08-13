@@ -17,7 +17,7 @@ from proto.message import Message
 from google.cloud.firestore import Client
 from google.cloud.firestore_v1._helpers import *
 
-from ._utils import _from_datastore
+from ._utils import _from_datastore, _to_datastore
 from firebase._exception import raise_detailed_error
 
 
@@ -95,6 +95,50 @@ class Collection:
 
 		if self._credentials:
 			self.__datastore = Client(credentials=self._credentials, project=self._project_id)
+
+	def add(self, data, token=None):
+		""" Create a document in the Firestore database with the
+		provided data using an auto generated ID for the document.
+
+
+		:type data: dict
+		:param data: Data to be stored in firestore.
+
+		:type token: str
+		:param token: (Optional) Firebase Auth User ID Token, defaults
+			to :data:`None`.
+
+
+		:return: returns the auto generated document ID, used to store
+			the data.
+		:rtype: str
+		"""
+
+		path = self._path.copy()
+		self._path.clear()
+
+		if self._credentials:
+			db_ref = _build_db(self.__datastore, path)
+
+			response = db_ref.add(data)
+
+			return response[1].id
+
+		else:
+			req_ref = f"{self._base_url}/{'/'.join(path)}?key={self._api_key}"
+
+			if token:
+				headers = {"Authorization": "Firebase " + token}
+				response = self._requests.post(req_ref, headers=headers, json=_to_datastore(data))
+
+			else:
+				response = self._requests.post(req_ref, json=_to_datastore(data))
+
+			raise_detailed_error(response)
+
+			doc_id = response.json()['name'].split('/')
+
+			return doc_id.pop()
 
 	def document(self, document_id):
 		""" A reference to a document in a collection.
