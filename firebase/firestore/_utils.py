@@ -56,7 +56,9 @@ def _decode_datastore(value):
 	:return: A native Python value converted from the ``value``.
 	:rtype: :data:`None` or :class:`bool` or :class:`bytes`
 		or :class:`int` or :class:`float` or :class:`str` or
-		:class:`dict`
+		:class:`dict` or
+		:class:`~google.api_core.datetime_helpers.DatetimeWithNanoseconds`
+		or  :class:`~google.cloud.firestore_v1._helpers.GeoPoint`.
 
 	:raises TypeError: For value types that are unsupported.
 	"""
