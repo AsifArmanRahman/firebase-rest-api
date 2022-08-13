@@ -1,3 +1,12 @@
+# [1.6.0](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v1.5.0...v1.6.0) (2022-08-13)
+
+
+### Features
+
+* **firestore:** add add() method ([ec710ab](https://github.com/AsifArmanRahman/firebase-rest-api/commit/ec710ab5cb050f3799eb66430998bfb001f2e343))
+
+
+
 # [1.5.0](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v1.4.0...v1.5.0) (2022-08-11)
 
 
