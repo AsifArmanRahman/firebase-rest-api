@@ -27,6 +27,12 @@ You can build paths to your data by using the ``collection()`` and ``document()`
 
 ..
 
+      .. note::
+         The methods available/used after ``collection()`` method and
+         ``document()`` method are **NOT SAME**. Both method is a
+         reference to different classes with different methods in them.
+
+
 Save Data
 ---------
 
@@ -51,6 +57,26 @@ the collection named ``Movies``, use  ``set()`` method.
    .. attention::
       Using this method on an existing document will overwrite the existing
       document.
+
+
+
+To store data in a collection named ``Marvels`` within an auto
+generated document ID, use ``add()`` method.
+
+.. code-block:: python
+
+   data = {
+      "name": "Iron Man",
+      "lead": {
+         "name": "Robert Downey Jr."
+      },
+      'cast': ['Gwyneth Paltrow']
+      'released': False,
+      'prequel': None
+   }
+
+   id = fsdb.collection('Marvels').add(data)
+..
 
 
 Read Data
@@ -86,10 +112,6 @@ it contains) of an collection ``Marvels``, use ``get()`` method.
    fsdb.collection('Marvels').get()
 ..
 
-   .. note::
-      The ``get()`` method use after ``collection()`` method and
-      ``document()`` method are **NOT SAME**. They both accept and
-      return different type of values.
 
 Update Data
 -----------
