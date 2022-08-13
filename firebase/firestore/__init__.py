@@ -16,6 +16,9 @@ from math import ceil
 from proto.message import Message
 from google.cloud.firestore import Client
 from google.cloud.firestore_v1._helpers import *
+from google.cloud.firestore_v1.query import Query
+from google.cloud.firestore_v1.collection import CollectionReference
+from google.cloud.firestore_v1.base_query import _enum_from_direction
 
 from ._utils import _from_datastore, _to_datastore
 from firebase._exception import raise_detailed_error
@@ -96,6 +99,64 @@ class Collection:
 		if self._credentials:
 			self.__datastore = Client(credentials=self._credentials, project=self._project_id)
 
+		self._query = {}
+		self._is_limited_to_last = False
+
+	def _build_query(self):
+		""" Builds query for firestore to execute.
+
+
+		:return: An query.
+		:rtype: :class:`~google.cloud.firestore_v1.query.Query`
+		"""
+
+		if self._credentials:
+			_query = _build_db(self.__datastore, self._path)
+		else:
+			_query = Query(CollectionReference(self._path.pop()))
+
+		for key, val in self._query.items():
+			if key == 'endAt':
+				_query = _query.end_at(val)
+			elif key == 'endBefore':
+				_query = _query.end_before(val)
+			elif key == 'limit':
+				_query = _query.limit(val)
+			elif key == 'limitToLast':
+				_query = _query.limit_to_last(val)
+			elif key == 'offset':
+				_query = _query.offset(val)
+			elif key == 'orderBy':
+				for q in val:
+					_query = _query.order_by(q[0], **q[1])
+			elif key == 'select':
+				_query = _query.select(val)
+			elif key == 'startAfter':
+				_query = _query.start_after(val)
+			elif key == 'startAt':
+				_query = _query.start_at(val)
+			elif key == 'where':
+				for q in val:
+					_query = _query.where(q[0], q[1], q[2])
+
+		if not self._credentials and _query._limit_to_last:
+
+			self._is_limited_to_last = _query._limit_to_last
+
+			for order in _query._orders:
+				order.direction = _enum_from_direction(
+					_query.DESCENDING
+					if order.direction == _query.ASCENDING
+					else _query.ASCENDING
+				)
+
+			_query._limit_to_last = False
+
+		self._path.clear()
+		self._query.clear()
+
+		return _query
+
 	def add(self, data, token=None):
 		""" Create a document in the Firestore database with the
 		provided data using an auto generated ID for the document.
@@ -155,6 +216,42 @@ class Collection:
 		self._path.append(document_id)
 		return Document(self._path, api_key=self._api_key, credentials=self._credentials, project_id=self._project_id, requests=self._requests)
 
+	def end_at(self, document_fields):
+		""" End query at a cursor with this collection as parent.
+
+
+		:type document_fields: dict
+		:param document_fields: A dictionary of fields representing a
+			query results cursor. A cursor is a collection of values
+			that represent a position in a query result set.
+
+
+		:return: A reference to the instance object.
+		:rtype: Collection
+		"""
+
+		self._query['endAt'] = document_fields
+
+		return self
+
+	def end_before(self, document_fields):
+		""" End query before a cursor with this collection as parent.
+
+
+		:type document_fields: dict
+		:param document_fields: A dictionary of fields representing a
+			query results cursor. A cursor is a collection of values
+			that represent a position in a query result set.
+
+
+		:return: A reference to the instance object.
+		:rtype: Collection
+		"""
+
+		self._query['endBefore'] = document_fields
+
+		return self
+
 	def get(self, token=None):
 		""" Returns a list of dict's containing document ID and the
 		data stored within them.
@@ -169,13 +266,10 @@ class Collection:
 		:rtype: list
 		"""
 
-		path = self._path.copy()
-		self._path.clear()
-
 		docs = []
 
 		if self._credentials:
-			db_ref = _build_db(self.__datastore, path)
+			db_ref = self._build_query()
 
 			results = db_ref.get()
 
@@ -184,22 +278,235 @@ class Collection:
 
 		else:
 
-			req_ref = f"{self._base_url}/{'/'.join(path)}?key={self._api_key}"
+			body = None
+
+			if len(self._query) > 0:
+				req_ref = f"{self._base_url}/{'/'.join(self._path[:-1])}:runQuery?key={self._api_key}"
+
+				body = {
+					"structuredQuery": json.loads(Message.to_json(self._build_query()._to_protobuf()))
+				}
+
+			else:
+				req_ref = f"{self._base_url}/{'/'.join(self._path)}?key={self._api_key}"
 
 			if token:
 				headers = {"Authorization": "Firebase " + token}
-				response = self._requests.get(req_ref, headers=headers)
+
+				if body:
+					response = self._requests.post(req_ref, headers=headers, json=body)
+				else:
+					response = self._requests.get(req_ref, headers=headers)
 
 			else:
-				response = self._requests.get(req_ref)
+
+				if body:
+					response = self._requests.post(req_ref, json=body)
+				else:
+					response = self._requests.get(req_ref)
 
 			raise_detailed_error(response)
 
-			for doc in response.json()['documents']:
-				doc_id = doc['name'].split('/')
-				docs.append({doc_id.pop(): _from_datastore({'fields': doc['fields']})})
+			if isinstance(response.json(), dict):
+				for doc in response.json()['documents']:
+					doc_id = doc['name'].split('/')
+					docs.append({doc_id.pop(): _from_datastore({'fields': doc['fields']})})
+
+			elif isinstance(response.json(), list):
+				for doc in response.json():
+					fields = {}
+
+					if doc.get('document'):
+
+						if doc.get('document').get('fields'):
+							fields = doc['document']['fields']
+
+						doc_id = doc['document']['name'].split('/')
+						docs.append({doc_id.pop(): _from_datastore({'fields': fields})})
+
+			if self._is_limited_to_last:
+				docs = list(reversed(list(docs)))
 
 		return docs
+
+	def limit_to_first(self, count):
+		""" Create a limited query with this collection as parent.
+
+			.. note::
+				`limit_to_first` and `limit_to_last` are mutually
+				exclusive. Setting `limit_to_first` will drop
+				previously set `limit_to_last`.
+
+
+		:type count: int
+		:param count: Maximum number of documents to return that match
+			the query.
+
+
+		:return: A reference to the instance object.
+		:rtype: Collection
+		"""
+
+		self._query['limit'] = count
+
+		return self
+
+	def limit_to_last(self, count):
+		""" Create a limited to last query with this collection as
+		parent.
+
+			.. note::
+				`limit_to_first` and `limit_to_last` are mutually
+				exclusive. Setting `limit_to_first` will drop
+				previously set `limit_to_last`.
+
+
+		:type count: int
+		:param count: Maximum number of documents to return that
+			match the query.
+
+
+		:return: A reference to the instance object.
+		:rtype: Collection
+		"""
+
+		self._query['limitToLast'] = count
+
+		return self
+
+	def offset(self, num_to_skip):
+		""" Skip to an offset in a query with this collection as parent.
+
+
+		:type num_to_skip: int
+		:param num_to_skip: The number of results to skip at the
+			beginning of query results. (Must be non-negative.)
+
+
+		:return: A reference to the instance object.
+		:rtype: Collection
+		"""
+
+		self._query['offset'] = num_to_skip
+
+		return self
+
+	def order_by(self, field_path, **kwargs):
+		""" Create an "order by" query with this collection as parent.
+
+
+		:type field_path: str
+		:param field_path: A field path (``.``-delimited list of field
+			names) on which to order the query results.
+
+		:Keyword Arguments:
+			* *direction* ( :class:`str` ) --
+				Sort query results in ascending/descending order on a field.
+
+
+		:return: A reference to the instance object.
+		:rtype: Collection
+		"""
+
+		arr = []
+
+		if self._query.get('orderBy'):
+			arr = self._query['orderBy']
+
+		arr.append([field_path, kwargs])
+
+		self._query['orderBy'] = arr
+
+		return self
+
+	def select(self, field_paths):
+		""" Create a "select" query with this collection as parent.
+
+		:type field_paths: list
+		:param field_paths: A list of field paths (``.``-delimited list
+			of field names) to use as a projection of document fields
+			in the query results.
+
+
+		:return: A reference to the instance object.
+		:rtype: Collection
+		"""
+
+		self._query['select'] = field_paths
+
+		return self
+
+	def start_after(self, document_fields):
+		""" Start query after a cursor with this collection as parent.
+
+
+		:type document_fields: dict
+		:param document_fields: A dictionary of fields representing
+			a query results cursor. A cursor is a collection of values
+			that represent a position in a query result set.
+
+
+		:return: A reference to the instance object.
+		:rtype: Collection
+		"""
+
+		self._query['startAfter'] = document_fields
+
+		return self
+
+	def start_at(self, document_fields):
+		""" Start query at a cursor with this collection as parent.
+
+
+		:type document_fields: dict
+		:param document_fields: A dictionary of fields representing a
+			query results cursor. A cursor is a collection of values
+			that represent a position in a query result set.
+
+
+		:return: A reference to the instance object.
+		:rtype: Collection
+		"""
+
+		self._query['startAt'] = document_fields
+
+		return self
+
+	def where(self, field_path, op_string, value):
+		""" Create a "where" query with this collection as parent.
+
+
+		:type field_path: str
+		:param field_path: A field path (``.``-delimited list of field
+			names) for the field to filter on.
+
+		:type op_string: str
+		:param op_string: A comparison operation in the form of a
+			string. Acceptable values are ``<``, ``<=``, ``==``, ``!=``
+			, ``>=``, ``>``, ``in``, ``not-in``, ``array_contains`` and
+			``array_contains_any``.
+
+		:type value: Any
+		:param value: The value to compare the field against in the
+			filter. If ``value`` is :data:`None` or a NaN, then ``==``
+			is the only allowed operation.  If ``op_string`` is ``in``,
+			``value`` must be a sequence of values.
+
+
+		:return: A reference to the instance object.
+		:rtype: Collection
+		"""
+
+		arr = []
+
+		if self._query.get('where'):
+			arr = self._query['where']
+
+		arr.append([field_path, op_string, value])
+
+		self._query['where'] = arr
+
+		return self
 
 
 class Document:
