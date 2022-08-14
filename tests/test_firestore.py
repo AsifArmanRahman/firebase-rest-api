@@ -43,6 +43,39 @@ class TestFirestoreAdmin:
 	def test_collection_get(self, ds_admin):
 		assert ds_admin.collection('Marvels').document('Movies').collection('PhaseOne').get() == [{'001': self.__class__.movies1}, {self.__class__.auto_doc_id: self.__class__.movies2}]
 
+	def test_collection_get_start_after(self, ds_admin):
+		assert ds_admin.collection('Marvels').document('Movies').collection('PhaseOne').order_by('rating').start_after({'rating': 7.4}).get() == [{'001': self.__class__.movies1}]
+		assert ds_admin.collection('Marvels').document('Movies').collection('PhaseOne').order_by('rating').start_after({'rating': 6.9}).get() == [{self.__class__.auto_doc_id: self.__class__.movies2}, {'001': self.__class__.movies1}]
+		assert ds_admin.collection('Marvels').document('Movies').collection('PhaseOne').order_by('rating').start_after({'rating': 8.5}).get() == []
+
+	def test_collection_get_start_at(self, ds_admin):
+		assert ds_admin.collection('Marvels').document('Movies').collection('PhaseOne').order_by('rating').start_at({'rating': 7.4}).get() == [{'001': self.__class__.movies1}]
+		assert ds_admin.collection('Marvels').document('Movies').collection('PhaseOne').order_by('rating').start_at({'rating': 8.0}).get() == []
+		assert ds_admin.collection('Marvels').document('Movies').collection('PhaseOne').order_by('rating').start_at({'rating': 7.0}).get() == [{self.__class__.auto_doc_id: self.__class__.movies2}, {'001': self.__class__.movies1}]		
+
+	def test_collection_get_select(self, ds_admin):
+		assert ds_admin.collection('Marvels').document('Movies').collection('PhaseOne').select(['lead.name', 'released']).get() == [{'001': {'lead': self.__class__.movies1['lead'], 'released': self.__class__.movies1['released']}}, {self.__class__.auto_doc_id: {'lead': self.__class__.movies2['lead'], 'released': self.__class__.movies2['released']}}]
+
+	def test_collection_get_offset(self, ds_admin):
+		assert ds_admin.collection('Marvels').document('Movies').collection('PhaseOne').order_by('year').offset(1).get() == [{self.__class__.auto_doc_id: self.__class__.movies2}]
+
+	def test_collection_get_limit_to_first(self, ds_admin):
+		assert ds_admin.collection('Marvels').document('Movies').collection('PhaseOne').order_by('year').limit_to_first(1).get() == [{'001': self.__class__.movies1}]
+
+	def test_collection_get_limit_to_last(self, ds_admin):
+		assert ds_admin.collection('Marvels').document('Movies').collection('PhaseOne').order_by('year').limit_to_last(1).get() == [{'001': self.__class__.movies1}]
+
+	def test_collection_get_end_at(self, ds_admin):
+		assert ds_admin.collection('Marvels').document('Movies').collection('PhaseOne').order_by('year').end_at({'year': 2010}).get() == [{'001': self.__class__.movies1}]
+		assert ds_admin.collection('Marvels').document('Movies').collection('PhaseOne').order_by('year').end_at({'year': 2021}).get() == [{'001': self.__class__.movies1}, {self.__class__.auto_doc_id: self.__class__.movies2}]
+
+	def test_collection_get_end_before(self, ds_admin):
+		assert ds_admin.collection('Marvels').document('Movies').collection('PhaseOne').order_by('year').end_before({'year': 2023}).get() == [{'001': self.__class__.movies1}, {self.__class__.auto_doc_id: self.__class__.movies2}]
+
+	def test_collection_get_where(self, ds_admin):
+		assert ds_admin.collection('Marvels').document('Movies').collection('PhaseOne').where('lead.name', 'in',  ['Benedict Cumberbatch', 'Robert Downey Jr.']).get() == [{'001': self.__class__.movies1}]
+		assert ds_admin.collection('Marvels').document('Movies').collection('PhaseOne').where('rating', '<=', 8.0).order_by('rating', direction='DESCENDING').get() == [{'001': self.__class__.movies1}, {self.__class__.auto_doc_id: self.__class__.movies2}]
+
 	def test_manual_doc_update(self, ds_admin):
 		update_data = {'released': True}
 
@@ -111,6 +144,39 @@ class TestFirestoreAuth:
 		assert ds.collection('Marvels').document('Movies').collection('PhaseThree').document('014').get(field_paths=['name'], token=self.__class__.user.get('idToken')) == {'name': self.__class__.movies1['name']}
 		assert ds.collection('Marvels').document('Movies').collection('PhaseThree').document(self.__class__.auto_doc_id).get(field_paths=['name'], token=self.__class__.user.get('idToken')) == {'name': self.__class__.movies2['name']}
 
+	def test_collection_get_start_after(self, ds):
+		assert ds.collection('Marvels').document('Movies').collection('PhaseThree').order_by('rating').start_after({'rating': 7.4}).get(token=self.__class__.user.get('idToken')) == [{'014': self.__class__.movies1}]
+		assert ds.collection('Marvels').document('Movies').collection('PhaseThree').order_by('rating').start_after({'rating': 7.2}).get(token=self.__class__.user.get('idToken')) == [{self.__class__.auto_doc_id: self.__class__.movies2}, {'014': self.__class__.movies1}]
+		assert ds.collection('Marvels').document('Movies').collection('PhaseThree').order_by('rating').start_after({'rating': 8.5}).get(token=self.__class__.user.get('idToken')) == []
+
+	def test_collection_get_start_at(self, ds):
+		assert ds.collection('Marvels').document('Movies').collection('PhaseThree').order_by('rating').start_at({'rating': 7.4}).get(token=self.__class__.user.get('idToken')) == [{'014': self.__class__.movies1}]
+		assert ds.collection('Marvels').document('Movies').collection('PhaseThree').order_by('rating').start_at({'rating': 8.0}).get(token=self.__class__.user.get('idToken')) == []
+		assert ds.collection('Marvels').document('Movies').collection('PhaseThree').order_by('rating').start_at({'rating': 7.0}).get(token=self.__class__.user.get('idToken')) == [{self.__class__.auto_doc_id: self.__class__.movies2}, {'014': self.__class__.movies1}]		
+
+	def test_collection_get_select(self, ds):
+		assert ds.collection('Marvels').document('Movies').collection('PhaseThree').select(['lead.name', 'released']).get(token=self.__class__.user.get('idToken')) == [{'014': {'lead': self.__class__.movies1['lead'], 'released': self.__class__.movies1['released']}}, {self.__class__.auto_doc_id: {'lead': self.__class__.movies2['lead'], 'released': self.__class__.movies2['released']}}]
+
+	def test_collection_get_offset(self, ds):
+		assert ds.collection('Marvels').document('Movies').collection('PhaseThree').order_by('year').offset(1).get(token=self.__class__.user.get('idToken')) == [{self.__class__.auto_doc_id: self.__class__.movies2}]
+
+	def test_collection_get_limit_to_first(self, ds):
+		assert ds.collection('Marvels').document('Movies').collection('PhaseThree').order_by('year').limit_to_first(1).get(token=self.__class__.user.get('idToken')) == [{'014': self.__class__.movies1}]
+
+	def test_collection_get_limit_to_last(self, ds):
+		assert ds.collection('Marvels').document('Movies').collection('PhaseThree').order_by('year').limit_to_last(1).get(token=self.__class__.user.get('idToken')) == [{'014': self.__class__.movies1}]
+
+	def test_collection_get_end_at(self, ds):
+		assert ds.collection('Marvels').document('Movies').collection('PhaseThree').order_by('year').end_at({'year': 2010}).get(token=self.__class__.user.get('idToken')) == []
+		assert ds.collection('Marvels').document('Movies').collection('PhaseThree').order_by('year').end_at({'year': 2021}).get(token=self.__class__.user.get('idToken')) == [{'014': self.__class__.movies1}, {self.__class__.auto_doc_id: self.__class__.movies2}]
+
+	def test_collection_get_end_before(self, ds):
+		assert ds.collection('Marvels').document('Movies').collection('PhaseThree').order_by('year').end_before({'year': 2023}).get(token=self.__class__.user.get('idToken')) == [{'014': self.__class__.movies1}, {self.__class__.auto_doc_id: self.__class__.movies2}]
+
+	def test_collection_get_where(self, ds):
+		assert ds.collection('Marvels').document('Movies').collection('PhaseThree').where('lead.name', 'in',  ['Benedict Cumberbatch', 'Robert Downey Jr.']).get(token=self.__class__.user.get('idToken')) == [{'014': self.__class__.movies1}]
+		assert ds.collection('Marvels').document('Movies').collection('PhaseThree').where('rating', '<=', 8.0).order_by('rating', direction='DESCENDING').get(token=self.__class__.user.get('idToken')) == [{'014': self.__class__.movies1}, {self.__class__.auto_doc_id: self.__class__.movies2}]
+
 	def test_manual_doc_update(self, ds):
 		update_data = {'released': True}
 
@@ -170,6 +236,39 @@ class TestFirestore:
 	def test_manual_doc_get_filtered(self, ds):
 		assert ds.collection('Marvels').document('Series').collection('PhaseFour').document('003').get(field_paths=['name']) == {'name': self.__class__.series1['name']}
 		assert ds.collection('Marvels').document('Series').collection('PhaseFour').document(self.__class__.auto_doc_id).get(field_paths=['name']) == {'name': self.__class__.series2['name']}
+
+	def test_collection_get_start_after(self, ds):
+		assert ds.collection('Marvels').document('Series').collection('PhaseFour').order_by('rating').start_after({'rating': 7.4}).get() == [{'003': self.__class__.series1}]
+		assert ds.collection('Marvels').document('Series').collection('PhaseFour').order_by('rating').start_after({'rating': 7.3}).get() == [{self.__class__.auto_doc_id: self.__class__.series2}, {'003': self.__class__.series1}]
+		assert ds.collection('Marvels').document('Series').collection('PhaseFour').order_by('rating').start_after({'rating': 8.5}).get() == []
+
+	def test_collection_get_start_at(self, ds):
+		assert ds.collection('Marvels').document('Series').collection('PhaseFour').order_by('rating').start_at({'rating': 7.4}).get() == [{self.__class__.auto_doc_id: self.__class__.series2}, {'003': self.__class__.series1}]
+		assert ds.collection('Marvels').document('Series').collection('PhaseFour').order_by('rating').start_at({'rating': 8.0}).get() == [{'003': self.__class__.series1}]
+		assert ds.collection('Marvels').document('Series').collection('PhaseFour').order_by('rating').start_at({'rating': 8.5}).get() == []		
+
+	def test_collection_get_select(self, ds):
+		assert ds.collection('Marvels').document('Series').collection('PhaseFour').select(['lead.name', 'released']).get() == [{'003': {'lead': self.__class__.series1['lead'], 'released': self.__class__.series1['released']}}, {self.__class__.auto_doc_id: {'lead': self.__class__.series2['lead'], 'released': self.__class__.series2['released']}}]
+
+	def test_collection_get_offset(self, ds):
+		assert ds.collection('Marvels').document('Series').collection('PhaseFour').order_by('year').offset(1).get() == [{self.__class__.auto_doc_id: self.__class__.series2}]
+
+	def test_collection_get_limit_to_first(self, ds):
+		assert ds.collection('Marvels').document('Series').collection('PhaseFour').order_by('year').limit_to_first(1).get() == [{'003': self.__class__.series1}]
+
+	def test_collection_get_limit_to_last(self, ds):
+		assert ds.collection('Marvels').document('Series').collection('PhaseFour').order_by('year').limit_to_last(1).get() == [{'003': self.__class__.series1}]
+
+	def test_collection_get_end_at(self, ds):
+		assert ds.collection('Marvels').document('Series').collection('PhaseFour').order_by('year').end_at({'year': 2010}).get() == []
+		assert ds.collection('Marvels').document('Series').collection('PhaseFour').order_by('year').end_at({'year': 2021}).get() == [{'003': self.__class__.series1}]
+
+	def test_collection_get_end_before(self, ds):
+		assert ds.collection('Marvels').document('Series').collection('PhaseFour').order_by('year').end_before({'year': 2023}).get() == [{'003': self.__class__.series1}, {self.__class__.auto_doc_id: self.__class__.series2}]
+
+	def test_collection_get_where(self, ds):
+		assert ds.collection('Marvels').document('Series').collection('PhaseFour').where('lead.name', 'in',  ['Benedict Cumberbatch', 'Robert Downey Jr.']).get() == []
+		assert ds.collection('Marvels').document('Series').collection('PhaseFour').where('rating', '<=', 8.0).get() == [{self.__class__.auto_doc_id: self.__class__.series2}]
 
 	def test_manual_doc_update(self, ds):
 		update_data = {'released': True}
