@@ -36,6 +36,9 @@ You can build paths to your data by using the ``collection()`` and ``document()`
 Save Data
 ---------
 
+set
+^^^
+
 To store data in a collection named ``Marvels`` and a document inside
 the collection named ``Movies``, use  ``set()`` method.
 
@@ -59,6 +62,8 @@ the collection named ``Movies``, use  ``set()`` method.
       document.
 
 
+add
+^^^
 
 To store data in a collection named ``Marvels`` within an auto
 generated document ID, use ``add()`` method.
@@ -82,6 +87,12 @@ generated document ID, use ``add()`` method.
 Read Data
 ---------
 
+|document-get|
+^^^^^^^^^^^^^^
+
+.. |document-get| replace::
+   get
+
 To read data from an existing document ``Movies`` of the collection
 ``Marvels``, use ``get()`` method.
 
@@ -103,6 +114,11 @@ It is possible to filter the data of an document to receive specific fields.
 ..
 
 
+|collection-get|
+^^^^^^^^^^^^^^^^
+
+.. |collection-get| replace::
+      get
 
 To fetch data regarding all existing document (document ID and the data
 it contains) of an collection ``Marvels``, use ``get()`` method.
@@ -112,9 +128,15 @@ it contains) of an collection ``Marvels``, use ``get()`` method.
    fsdb.collection('Marvels').get()
 ..
 
+   .. warning::
+      This ``get()`` method is different from the above stated one, and
+      receives different parameters and returns different output.
 
 Update Data
 -----------
+
+update
+^^^^^^
 
 To add more data to an existing document, use ``update()`` method.
 
@@ -163,6 +185,12 @@ To add an item to an array field in an existing document, use
 Delete Data
 -----------
 
+|delete-update|
+^^^^^^^^^^^^^^^
+
+.. |delete-update| replace::
+      update
+
 To remove an field from an existing document, use ``update()`` method.
 
 .. code-block:: python
@@ -191,6 +219,8 @@ To remove an item to an array field in an existing document, use
 ..
 
 
+delete
+^^^^^^
 
 To remove an existing document in a collection, use ``delete()``
 method.
