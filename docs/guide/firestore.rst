@@ -199,3 +199,254 @@ method.
 
    fsdb.collection('Marvels').document('Movies').delete()
 ..
+
+
+Complex Queries
+---------------
+
+order_by
+^^^^^^^^
+
+To fetch documents with it's data in a collection ``Marvels``, ordered 
+of field ``year``-s value.
+
+.. code-block:: python
+
+   fsdb.collection('Marvels').order_by('year').get()
+..
+
+
+
+To order the documents in descending order of field ``year``s value
+, add ``direction`` keyword argument.
+
+.. code-block:: python
+
+   from google.cloud.firestore import Query
+
+   fsdb.collection('Marvels').order_by('year', direction=Query.DESCENDING).get()
+..
+
+
+limit_to_first
+^^^^^^^^^^^^^^
+
+To limit the number of documents returned in a query to first *N*
+documents, we use ``limit_to_first`` method.
+
+.. code-block:: python
+
+   docs = fsdb.collection('Marvels').order_by('year', direction='DESCENDING').limit_to_first(2).get()
+..
+
+   .. note::
+      `limit_to_first` and `limit_to_last` are mutually
+      exclusive. Setting `limit_to_first` will drop
+      previously set `limit_to_last`.
+
+
+limit_to_last
+^^^^^^^^^^^^^
+
+To limit the number of documents returned in a query to last *N*
+documents, we use ``limit_to_last`` method.
+
+.. code-block:: python
+
+   docs = fsdb.collection('Marvels').order_by('year', direction='ASCENDING').limit_to_last(2).get()
+..
+
+   .. note::
+      `limit_to_first` and `limit_to_last` are mutually
+      exclusive. Setting `limit_to_first` will drop
+      previously set `limit_to_last`.
+
+
+start_at
+^^^^^^^^
+
+To fetch documents with field ``year`` with a ``2007`` or higher will
+be fetched from a collection ``Marvels``, and anything before ``2007``
+will be ignored.
+
+.. code-block:: python
+
+   docs = fsdb.collection('Marvels').order_by('year').start_at({'year': 2007}).get()
+..
+
+
+start_after
+^^^^^^^^^^^
+
+To fetch documents with field ``year`` with a value greater than
+``2007`` will be fetched from a collection ``Marvels``, and any
+document with a value ``2007`` or less will be ignored.
+
+.. code-block:: python
+
+   docs = fsdb.collection('Marvels').order_by('year').start_after({'year': 2007}).get()
+..
+
+
+end_at
+^^^^^^
+
+To fetch documents with field ``year`` with a ``2022`` or less will
+be fetched from a collection ``Marvels``, and anything after ``2022``
+will be ignored.
+
+.. code-block:: python
+
+   docs = fsdb.collection('Marvels').order_by('year').end_at({'year': 2022}).get()
+..
+
+
+end_before
+^^^^^^^^^^
+
+To fetch documents with field ``year`` with a value less than
+``2023`` will be fetched from a collection ``Marvels``, and any
+document with a value ``2023`` or greater will be ignored.
+
+.. code-block:: python
+
+   docs = fsdb.collection('Marvels').order_by('year').end_before({'year': 2007}).get()
+..
+
+
+offset
+^^^^^^
+
+To filter out the first *N* documents from a query in collection 
+``Marvels``.
+
+.. code-block:: python
+
+   docs = fsdb.collection('Marvels').order_by('year').offset(5).get()
+..
+
+
+select
+^^^^^^
+
+To filter the fields ``lead.nam`` and ``released`` to be returned from
+documents in collection ``Marvels``.
+
+.. code-block:: python
+
+   docs = fsdb.collection('Marvels').select(['lead.name', 'released']).get()
+..
+
+
+where
+^^^^^
+
+To fetch all documents and its data in a collection ``Marvels`` where
+a field ``year`` exists with a value less than ``2008``.
+
+.. code-block:: python
+
+   fsdb.collection('Marvels').where('year', '<', 2008).get()
+..
+
+
+
+To fetch all documents and its data in a collection ``Marvels`` where
+a field ``year`` exists with a value less than equal to ``2008``.
+
+.. code-block:: python
+
+   fsdb.collection('Marvels').where('year', '<=', 2008).get()
+..
+
+
+
+To fetch all documents and its data in a collection ``Marvels`` where
+a field ``released`` exists with a value equal to ``True``.
+
+.. code-block:: python
+
+   fsdb.collection('Marvels').where('released', '==', True).get()
+..
+
+
+
+To fetch all documents and its data in a collection ``Marvels`` where
+a field ``released`` exists with a value not equal to ``False``.
+
+.. code-block:: python
+
+   fsdb.collection('Marvels').where('released', '!=', False).get()
+..
+
+
+
+To fetch all documents and its data in a collection ``Marvels`` where
+a field ``year`` exists with a value greater than equal to ``2008``.
+
+.. code-block:: python
+
+   fsdb.collection('Marvels').where('year', '>=', 2008).get()
+..
+
+
+To fetch all documents and its data in a collection ``Marvels`` where
+a field ``year`` exists with a value greater than ``2008``.
+
+.. code-block:: python
+
+   fsdb.collection('Marvels').where('year', '>', 2008).get()
+..
+
+
+
+To fetch all documents and its data in a collection ``Marvels`` where
+a array field ``cast`` exists and contains a value ``Gwyneth Paltrow``.
+
+.. code-block:: python
+
+   fsdb.collection('Marvels').where('cast', 'array_contains', 'Gwyneth Paltrow').get()
+..
+
+
+
+To fetch all documents and its data in a collection ``Marvels`` where
+a array field ``cast`` exists and contains either ``Gwyneth Paltrow``
+or ``Terrence Howard`` as a value.
+
+.. code-block:: python
+
+   fsdb.collection('Marvels').where('cast', 'array_contains_any', ['Gwyneth Paltrow', 'Terrence Howard']).get()
+..
+
+
+
+To fetch all documents and its data in a collection ``Marvels`` where
+a field ``lead.name`` exists with a value ``Robert Downey Jr.`` or
+``Benedict Cumberbatch``.
+
+.. code-block:: python
+
+   fsdb.collection('Marvels').where('lead.name', 'in', ['Robert Downey Jr.', 'Benedict Cumberbatch']).get()
+..
+
+
+
+To fetch all documents and its data in a collection ``Marvels`` where
+a field ``lead.name`` exists without a value ``Robert Downey Jr.`` or
+``Benedict Cumberbatch``.
+
+.. code-block:: python
+
+   fsdb.collection('Marvels').where('lead.name', 'not-in', ['Robert Downey Jr.', 'Benedict Cumberbatch']).get()
+..
+
+
+
+To fetch all documents and its data in a collection ``Marvels`` where
+a array field ``cast`` exists with a value ``Gwyneth Paltrow``.
+
+.. code-block:: python
+
+   fsdb.collection('Marvels').where('cast', 'in', [['Gwyneth Paltrow']]).get()
+..
