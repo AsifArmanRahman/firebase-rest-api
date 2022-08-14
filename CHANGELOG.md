@@ -1,3 +1,12 @@
+# [1.7.0](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v1.6.0...v1.7.0) (2022-08-14)
+
+
+### Features
+
+* **firestore:** support for complex queries ([6951e69](https://github.com/AsifArmanRahman/firebase-rest-api/commit/6951e6917ea31271da370e43cb5d8f0caa6d7d1f))
+
+
+
 # [1.6.0](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v1.5.0...v1.6.0) (2022-08-13)
 
 
