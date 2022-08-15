@@ -329,6 +329,51 @@ class Collection:
 
 		return docs
 
+	def list_of_documents(self, token=None):
+		""" List all sub-documents of the current collection.
+
+		:type token: str
+		:param token: (Optional) Firebase Auth User ID Token, defaults
+			to :data:`None`.
+
+
+		:return: A list of document ID's.
+		:rtype: list
+		"""
+
+		docs = []
+
+		path = self._path.copy()
+		self._path.clear()
+
+		if self._credentials:
+			db_ref = _build_db(self.__datastore, path)
+
+			list_doc = list(db_ref.list_documents())
+
+			for doc in list_doc:
+				docs.append(doc.id)
+
+		else:
+
+			req_ref = f"{self._base_url}/{'/'.join(path)}?key={self._api_key}"
+
+			if token:
+				headers = {"Authorization": "Firebase " + token}
+				response = self._requests.get(req_ref, headers=headers)
+
+			else:
+				response = self._requests.get(req_ref)
+
+			raise_detailed_error(response)
+
+			if response.json().get('documents'):
+				for doc in response.json()['documents']:
+					doc_id = doc['name'].split('/')
+					docs.append(doc_id.pop())
+
+		return docs
+
 	def limit_to_first(self, count):
 		""" Create a limited query with this collection as parent.
 
