@@ -43,6 +43,9 @@ class TestFirestoreAdmin:
 	def test_collection_get(self, ds_admin):
 		assert ds_admin.collection('Marvels').document('Movies').collection('PhaseOne').get() == [{'001': self.__class__.movies1}, {self.__class__.auto_doc_id: self.__class__.movies2}]
 
+	def test_collection_list_document(self, ds_admin):
+		assert ds_admin.collection('Marvels').document('Movies').collection('PhaseOne').list_of_documents() == ['001', self.__class__.auto_doc_id]
+
 	def test_collection_get_start_after(self, ds_admin):
 		assert ds_admin.collection('Marvels').document('Movies').collection('PhaseOne').order_by('rating').start_after({'rating': 7.4}).get() == [{'001': self.__class__.movies1}]
 		assert ds_admin.collection('Marvels').document('Movies').collection('PhaseOne').order_by('rating').start_after({'rating': 6.9}).get() == [{self.__class__.auto_doc_id: self.__class__.movies2}, {'001': self.__class__.movies1}]
@@ -140,6 +143,9 @@ class TestFirestoreAuth:
 	def test_collection_get(self, ds):
 		assert ds.collection('Marvels').document('Movies').collection('PhaseThree').get(token=self.__class__.user.get('idToken')) == [{'014': self.__class__.movies1}, {self.__class__.auto_doc_id: self.__class__.movies2}]
 
+	def test_collection_list_documents(self, ds):
+		assert ds.collection('Marvels').document('Movies').collection('PhaseThree').list_of_documents(token=self.__class__.user.get('idToken')) == ['014', self.__class__.auto_doc_id]
+
 	def test_manual_doc_get_filtered(self, ds):
 		assert ds.collection('Marvels').document('Movies').collection('PhaseThree').document('014').get(field_paths=['name'], token=self.__class__.user.get('idToken')) == {'name': self.__class__.movies1['name']}
 		assert ds.collection('Marvels').document('Movies').collection('PhaseThree').document(self.__class__.auto_doc_id).get(field_paths=['name'], token=self.__class__.user.get('idToken')) == {'name': self.__class__.movies2['name']}
@@ -232,6 +238,9 @@ class TestFirestore:
 
 	def test_collection_get(self, ds):
 		assert ds.collection('Marvels').document('Series').collection('PhaseFour').get() == [{'003': self.__class__.series1}, {self.__class__.auto_doc_id: self.__class__.series2}]
+
+	def test_collection_list_documents(self, ds):
+		assert ds.collection('Marvels').document('Series').collection('PhaseFour').list_of_documents() == ['003', self.__class__.auto_doc_id]
 
 	def test_manual_doc_get_filtered(self, ds):
 		assert ds.collection('Marvels').document('Series').collection('PhaseFour').document('003').get(field_paths=['name']) == {'name': self.__class__.series1['name']}
