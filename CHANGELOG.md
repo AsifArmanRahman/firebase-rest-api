@@ -1,3 +1,13 @@
+# [1.8.0](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v1.7.0...v1.8.0) (2022-08-15)
+
+
+### Features
+
+* **auth:** sign in with facebook ([0bcead3](https://github.com/AsifArmanRahman/firebase-rest-api/commit/0bcead336128195932120c371be70f0afd5595ae))
+* **firestore:** add list_of_documents() method ([04c8e20](https://github.com/AsifArmanRahman/firebase-rest-api/commit/04c8e20b98693e4e285266a571f7fcd9b7c10c4e))
+
+
+
 # [1.7.0](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v1.6.0...v1.7.0) (2022-08-14)
 
 
