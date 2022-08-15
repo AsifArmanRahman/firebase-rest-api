@@ -132,6 +132,19 @@ it contains) of an collection ``Marvels``, use ``get()`` method.
       This ``get()`` method is different from the above stated one, and
       receives different parameters and returns different output.
 
+
+list_of_documents
+^^^^^^^^^^^^^^^^^
+
+To fetch all existing document ID's in a collection ``Marvels``, use
+``list_of_documents()`` method.
+
+.. code-block:: python
+
+   fsdb.collection('Marvels').list_of_documents()
+..
+
+
 Update Data
 -----------
 
