@@ -167,6 +167,28 @@ with **Google** preset as the provider to use.
       your Firebase dashboard under Authentication -> Sign In Method.
 
 
+authenticate_login_with_facebook
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This method is actually an reference to
+:ref:`create_authentication_uri<guide/authentication:create_authentication_uri>`
+with **Facebook** preset as the provider to use.
+
+
+.. code-block:: python
+
+   # Example usage with Flask
+   @auth.route('/login/facebook')
+   def login_google():
+      return redirect(auth.authenticate_login_with_facebook())
+..
+
+   .. note:: 
+      Make sure you have the **Google Sign In** provider enabled in
+      your Firebase dashboard under Authentication -> Sign In Method.
+
+
+
 sign_in_with_oauth_credential
 -----------------------------
 
