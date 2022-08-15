@@ -14,9 +14,12 @@ A simple python wrapper for Google's
 
 import json
 import math
+import pkce
+import random
 import datetime
 import python_jwt as jwt
 import jwcrypto.jwk as jwk
+from hashlib import sha256
 from urllib.parse import parse_qs
 from cryptography.hazmat.primitives.serialization import Encoding, NoEncryption, PrivateFormat
 
@@ -50,6 +53,8 @@ class Auth:
 
 		self.provider_id = None
 		self.session_id = None
+		self.__code_verifier = None
+		self.__nonce = None
 
 		if client_secret:
 			self.client_secret = _load_client_secret(client_secret)
@@ -62,6 +67,15 @@ class Auth:
 		:rtype: str
 		"""
 		return self.create_authentication_uri('google.com')
+
+	def authenticate_login_with_facebook(self):
+		""" Redirect the user to Facebook's OAuth 2.0 server to
+		initiate the authentication and authorization process.
+
+		:return: Facebook Sign In URL
+		:rtype: str
+		"""
+		return self.create_authentication_uri('facebook.com')
 
 	def create_authentication_uri(self, provider_id):
 		""" Creates an authentication URI for the given social
@@ -91,16 +105,21 @@ class Auth:
 		request_ref = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/createAuthUri?key={0}".format(self.api_key)
 
 		data = {
-			"authFlowType": 'CODE_FLOW',
 			"clientId": self.client_secret['client_id'],
 			"providerId": provider_id,
 			"continueUri": self.client_secret['redirect_uris'][0],
-			"customParameter": {
-				"access_type": 'offline',
-				"prompt": 'select_account',
-				"include_granted_scopes": 'true',
-			}
 		}
+
+		self.__nonce = "".join(random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789") for _ in range(20))
+
+		if provider_id == 'google.com':
+			data['authFlowType'] = 'CODE_FLOW'
+			data['customParameter'] = {"access_type": 'offline', "prompt": 'select_account', "include_granted_scopes": 'true', "nonce": self.__nonce}
+
+		if provider_id == 'facebook.com':
+			self.__code_verifier, code_challenge = pkce.generate_pkce_pair()
+			data['oauthScope'] = 'openid'
+			data['customParameter'] = {"code_challenge": code_challenge, "code_challenge_method": 'S256', "nonce": sha256(self.__nonce.encode('utf')).hexdigest()}
 
 		headers = {"content-type": "application/json; charset=UTF-8"}
 		request_object = self.requests.post(request_ref, headers=headers, json=data)
@@ -221,7 +240,7 @@ class Auth:
 		:rtype: dict
 		"""
 
-		request_ref = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyCustomToken?key={0}".format(self.api_key)	# noqa
+		request_ref = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyCustomToken?key={0}".format(self.api_key)  # noqa
 
 		headers = {"content-type": "application/json; charset=UTF-8"}
 		data = json.dumps({"returnSecureToken": True, "token": token})
@@ -447,7 +466,7 @@ class Auth:
 
 		token = self._token_from_auth_url(oauth2callback_url)
 		data = {
-			'postBody': 'providerId={0}&{1}={2}'.format(self.provider_id, token['type'], token['value']),
+			'postBody': f"providerId={self.provider_id}&{token['type']}={token['value']}&nonce={self.__nonce}",
 			'autoCreate': 'true',
 			'requestUri': self.client_secret['redirect_uris'][0],
 			'sessionId': self.session_id,
@@ -476,7 +495,7 @@ class Auth:
 		:rtype: dict
 		"""
 
-		request_ref = 'https://www.googleapis.com/oauth2/v4/token'
+		request_ref = _token_host(self.provider_id)
 
 		auth_url_values = parse_qs(url[url.index('?') + 1:])
 
@@ -484,9 +503,13 @@ class Auth:
 			'client_id': self.client_secret['client_id'],
 			'client_secret': self.client_secret['client_secret'],
 			'code': auth_url_values['code'][0],
-			'grant_type': 'authorization_code',
 			'redirect_uri': self.client_secret['redirect_uris'][0],
 		}
+
+		if self.provider_id == 'google.com':
+			data['grant_type'] = 'authorization_code'
+		elif self.provider_id == 'facebook.com':
+			data['code_verifier'] = self.__code_verifier
 
 		headers = {"content-type": "application/x-www-form-urlencoded; charset=UTF-8"}
 		request_object = self.requests.post(request_ref, headers=headers, data=data)
@@ -557,7 +580,8 @@ def _load_client_secret(secret):
 
 	# Google client secrets are stored within 'web' key
 	# We will remove the key, and replace it with the dict type value of it
-	secret = secret['web']
+	if secret.get('web'):
+		secret = secret['web']
 
 	return secret
 
@@ -574,7 +598,15 @@ def _token_expire_time(user):
 	:return: Token dictionary with an ``expiresAt`` key.
 	:rtype: dict
 	"""
-	
-	user['expiresAt'] = math.floor(datetime.datetime.today().timestamp() + int(user.get('expiresIn')) - 60)
-	
+
+	user['expiresAt'] = math.floor(datetime.datetime.today().timestamp() + int(user.get('expiresIn', 3600)) - 60)
+
 	return user
+
+
+def _token_host(provider):
+	if provider == 'google.com':
+		return 'https://www.googleapis.com/oauth2/v4/token'
+
+	elif provider == 'facebook.com':
+		return 'https://graph.facebook.com/v14.0/oauth/access_token'
