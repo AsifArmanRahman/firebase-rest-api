@@ -1,14 +1,39 @@
-# Firebase REST API
+<div align="center">
 
-[![build](https://github.com/AsifArmanRahman/firebase-rest-api/actions/workflows/build.yml/badge.svg)](https://github.com/AsifArmanRahman/firebase-rest-api/actions/workflows/build.yml)
-[![tests](https://github.com/AsifArmanRahman/firebase-rest-api/actions/workflows/tests.yml/badge.svg)](https://github.com/AsifArmanRahman/firebase-rest-api/actions/workflows/tests.yml)
-[![Documentation Status](https://readthedocs.org/projects/firebase-rest-api/badge/?version=latest)](https://firebase-rest-api.readthedocs.io/en/latest/?badge=latest)
-[![codecov](https://codecov.io/gh/AsifArmanRahman/firebase-rest-api/branch/main/graph/badge.svg?token=N7TE1WVZ7W)](https://codecov.io/gh/AsifArmanRahman/firebase-rest-api)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/firebase-rest-api?logo=python&logoColor=informational)](https://pypi.org/project/firebase-rest-api/)
-[![PyPI](https://img.shields.io/pypi/v/firebase-rest-api?color=blue&logo=pypi&logoColor=white)](https://pypi.org/project/firebase-rest-api/)
+   <h1> Firebase REST API </h1>
+
+   <p>A simple python wrapper for <a href="https://firebase.google.com">Google's Firebase REST API's</a>.</p>
+   <br>
+
+</div>
+
+<div align="center">
+
+   <a href="https://github.com/AsifArmanRahman/firebase-rest-api/actions/workflows/build.yml"> 
+      <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/AsifArmanRahman/firebase-rest-api/build?logo=Github">
+   </a>
+   <a href="https://github.com/AsifArmanRahman/firebase-rest-api/actions/workflows/tests.yml">
+      <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/AsifArmanRahman/firebase-rest-api/tests?label=tests&logo=Pytest">
+   </a>
+   <a href="https://firebase-rest-api.readthedocs.io/en/latest/">
+      <img alt="Read the Docs" src="https://img.shields.io/readthedocs/firebase-rest-api?logo=Read%20the%20Docs&logoColor=white">
+   </a>
+   <a href="https://codecov.io/gh/AsifArmanRahman/firebase-rest-api"> 
+      <img alt="CodeCov" src="https://codecov.io/gh/AsifArmanRahman/firebase-rest-api/branch/main/graph/badge.svg?token=N7TE1WVZ7W"> 
+   </a>
+
+</div>
+
+<div align="center">
+   <a href="https://codecov.io/gh/AsifArmanRahman/firebase-rest-api"> 
+      <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/firebase-rest-api?logo=python">
+   </a>
+   <a href="https://codecov.io/gh/AsifArmanRahman/firebase-rest-api"> 
+      <img alt="PyPI" src="https://img.shields.io/pypi/v/firebase-rest-api?logo=PyPI&logoColor=white">
+   </a>
+</div>
 
 
-A simple python wrapper for [Google's Firebase REST API's](https://firebase.google.com).
 
 ## Installation
 
