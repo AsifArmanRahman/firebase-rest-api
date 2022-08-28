@@ -25,10 +25,10 @@
 </div>
 
 <div align="center">
-   <a href="https://codecov.io/gh/AsifArmanRahman/firebase-rest-api"> 
+   <a href="https://pypi.org/project/firebase-rest-api/"> 
       <img alt="PyPI - Python Version" src="https://img.shields.io/pypi/pyversions/firebase-rest-api?logo=python">
    </a>
-   <a href="https://codecov.io/gh/AsifArmanRahman/firebase-rest-api"> 
+   <a href="https://pypi.org/project/firebase-rest-api/"> 
       <img alt="PyPI" src="https://img.shields.io/pypi/v/firebase-rest-api?logo=PyPI&logoColor=white">
    </a>
 </div>
