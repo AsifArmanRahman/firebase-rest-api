@@ -1,3 +1,12 @@
+## [1.8.1](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v1.8.0...v1.8.1) (2023-02-08)
+
+
+### Bug Fixes
+
+* unsupported type error thrown for empty array field ([63cce77](https://github.com/AsifArmanRahman/firebase-rest-api/commit/63cce77420a999f0e151a32c8e389593b84dc357)), closes [#7](https://github.com/AsifArmanRahman/firebase-rest-api/issues/7)
+
+
+
 # [1.8.0](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v1.7.0...v1.8.0) (2022-08-15)
 
 
