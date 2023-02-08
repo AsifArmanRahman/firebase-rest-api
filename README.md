@@ -8,12 +8,18 @@
 </div>
 
 <div align="center">
+   <a href="https://pepy.tech/project/firebase-rest-api"> 
+      <img alt="Total Downloads" src="https://static.pepy.tech/personalized-badge/firebase-rest-api?period=total&units=international_system&left_color=blue&right_color=grey&left_text=Downloads">
+   </a>
+</div>
+
+<div align="center">
 
    <a href="https://github.com/AsifArmanRahman/firebase-rest-api/actions/workflows/build.yml"> 
-      <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/AsifArmanRahman/firebase-rest-api/build?logo=Github">
+      <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/AsifArmanRahman/firebase-rest-api/build.yml?logo=GitHub">
    </a>
    <a href="https://github.com/AsifArmanRahman/firebase-rest-api/actions/workflows/tests.yml">
-      <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/AsifArmanRahman/firebase-rest-api/tests?label=tests&logo=Pytest">
+      <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/asifarmanrahman/firebase-rest-api/tests.yml?label=tests&logo=Pytest">
    </a>
    <a href="https://firebase-rest-api.readthedocs.io/en/latest/">
       <img alt="Read the Docs" src="https://img.shields.io/readthedocs/firebase-rest-api?logo=Read%20the%20Docs&logoColor=white">
