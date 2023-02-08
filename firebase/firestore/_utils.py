@@ -32,11 +32,12 @@ def _from_datastore(data):
 		if val.get('mapValue'):
 			data_to_restructure[key] = _from_datastore(val['mapValue'])
 
-		elif val.get('arrayValue'):
+		elif isinstance(val.get('arrayValue'), dict):
 			arr = []
 
-			for x in val['arrayValue']['values']:
-				arr.append(_decode_datastore(x))
+			if val['arrayValue'].get('values'):
+				for x in val['arrayValue']['values']:
+					arr.append(_decode_datastore(x))
 
 			data_to_restructure[key] = arr
 

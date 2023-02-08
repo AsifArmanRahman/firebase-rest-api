@@ -105,7 +105,8 @@ class TestFirestoreAuth:
 		'year': 2016,
 		'rating': 7.5,
 		'prequel': None,
-		'cast': ['Tilda Swinton', 'Rachel McAdams', 'Mads Mikkelsen', 'Chiwetel Ejiofor', 'Benedict Wong']
+		'cast': ['Tilda Swinton', 'Rachel McAdams', 'Mads Mikkelsen', 'Chiwetel Ejiofor', 'Benedict Wong'],
+		'producers': []
 	}
 
 	movies2 = {
