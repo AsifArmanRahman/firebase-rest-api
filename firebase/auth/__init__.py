@@ -21,6 +21,7 @@ import python_jwt as jwt
 import jwcrypto.jwk as jwk
 from hashlib import sha256
 from urllib.parse import parse_qs
+from google.auth.transport.requests import Request
 from cryptography.hazmat.primitives.serialization import Encoding, NoEncryption, PrivateFormat
 
 from firebase._exception import raise_detailed_error
@@ -556,6 +557,35 @@ class Auth:
 		raise_detailed_error(request_object)
 
 		return request_object.json()
+
+	def set_custom_user_claims(self, user_id, custom_claims):
+		""" Add or remove custom claims from/to an existing user.
+
+		| For more details:
+		| `Firebase Auth REST API | Set and validate custom user claims`_
+
+		.. _Firebase Auth REST API | Set and validate custom user claims: https://firebase.google.com/docs/auth/admin/custom-claims#set_and_validate_custom_user_claims_via_the_admin_sdk
+
+		:type user_id: str
+		:param user_id: Firebase User UID.
+
+		:type custom_claims: dict
+		:param custom_claims: Claims to add to that user's token.
+		"""
+
+		request_ref = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/setAccountInfo?key={0}".format(self.api_key)
+
+		if not self.credentials.valid:
+			self.credentials.refresh(Request())
+
+		access_token = self.credentials.token
+
+		headers = {"Authorization": "Bearer " + access_token, "content-type": "application/json; charset=UTF-8"}
+
+		data = json.dumps({"localId": user_id, "customAttributes":json.dumps(custom_claims), "returnSecureToken": False})
+		request_object = self.requests.post(request_ref, headers=headers, data=data)
+
+		raise_detailed_error(request_object)
 
 
 def _load_client_secret(secret):
