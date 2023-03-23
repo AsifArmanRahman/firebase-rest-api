@@ -76,6 +76,13 @@ class TestAuth:
 		assert user
 		assert new_name == user['displayName']
 
+	def test_set_custom_user_claims(self, auth):
+		with pytest.raises(AttributeError) as exc_info:
+			auth.set_custom_user_claims(self.__class__.user.get('localId'), {'premium': True})
+			auth.set_custom_user_claims(self.__class__.anonymous_user.get('localId'), {'premium': True})
+
+		assert "'NoneType' object has no attribute 'valid'" in str(exc_info.value)
+
 	def test_delete_user_account(self, auth):
 		assert auth.delete_user_account(self.__class__.user.get('idToken'))
 		assert auth.delete_user_account(self.__class__.anonymous_user.get('idToken'))
@@ -159,6 +166,10 @@ class TestAuthAdmin:
 		user = auth_admin.update_profile(self.__class__.user.get('idToken'), display_name=new_name)
 		assert user
 		assert new_name == user['displayName']
+
+	def test_set_custom_user_claims(self, auth_admin):
+		auth_admin.set_custom_user_claims(self.__class__.user.get('localId'), {'premium': True})
+		auth_admin.set_custom_user_claims(self.__class__.anonymous_user.get('localId'), {'premium': True})
 
 	def test_delete_user_account(self, auth_admin):
 		assert auth_admin.delete_user_account(self.__class__.user.get('idToken'))
