@@ -89,6 +89,30 @@ sign in, or sign in as the user on the server.
    user = auth.sign_in_with_custom_token(token)
 ..
 
+
+set_custom_user_claims
+----------------------
+
+You can add custom claims to existing user, or remove
+claims which was previously added to that account.
+
+.. code-block:: python
+
+   # add claims
+   auth.set_custom_user_claims(user['localId'], {'premium': True})
+
+   # remove claims
+   auth.set_custom_user_claims(user['localId'], {'premium': None})
+..
+
+   .. note::
+      1. You need admin credentials (Service Account Key) to add or 
+      remove custom claims.
+
+      2. The new custom claims will propagate to the user's ID token 
+      the next time a new token is issued.
+
+
 sign_in_anonymous
 -----------------
 
