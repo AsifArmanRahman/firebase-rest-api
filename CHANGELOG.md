@@ -1,3 +1,12 @@
+# [1.10.0](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v1.9.0...v1.10.0) (2023-03-24)
+
+
+### Features
+
+* **auth:** verify id token ([d896ab3](https://github.com/AsifArmanRahman/firebase-rest-api/commit/d896ab33a7347e5c99ee29b43395aec06e7dcab0)), closes [#9](https://github.com/AsifArmanRahman/firebase-rest-api/issues/9)
+
+
+
 # [1.9.0](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v1.8.1...v1.9.0) (2023-03-24)
 
 
