@@ -113,6 +113,22 @@ claims which was previously added to that account.
       the next time a new token is issued.
 
 
+verify_id_token
+---------------
+
+You can decode the Firebase ID token, and check for claims.
+
+.. code-block:: python
+
+   # check if user is subscribed to premium
+   claims = auth.verify_id_token(user['IdToken'])
+
+   if claims['premium'] is True:
+    # Allow access to requested premium resource.
+    pass
+..
+
+
 sign_in_anonymous
 -----------------
 
