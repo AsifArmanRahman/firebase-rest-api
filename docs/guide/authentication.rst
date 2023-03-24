@@ -169,8 +169,17 @@ used to generate tokens to sign in with social providers in
 
 .. code-block:: python
 
-   # Get a reference to the auth service with provider secret set
+   # Get a reference to the auth service with provider secret file
    auth = firebaseApp.auth(client_secret='client-secret-file.json')
+
+   # Reference to auth service with provider secret from env variable
+   client_secret_config = { 
+      "client_id": environ.get("CLIENT_ID"), 
+      "client_secret": environ.get("CLIENT_SECRET"),
+      "redirect_uris": [environ.get("REDIRECT_URI")]
+   }
+
+   auth = firebaseApp.auth(client_secret=client_secret_config)
 ..
 
 .. code-block:: python
@@ -185,6 +194,7 @@ used to generate tokens to sign in with social providers in
    .. note:: 
       Make sure you have the **social** provider enabled in your
       Firebase dashboard under Authentication -> Sign In Method.
+
 
 authenticate_login_with_google
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
