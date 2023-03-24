@@ -1,3 +1,12 @@
+# [1.9.0](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v1.8.1...v1.9.0) (2023-03-24)
+
+
+### Features
+
+* set custom user claims ([9a5c9b9](https://github.com/AsifArmanRahman/firebase-rest-api/commit/9a5c9b958a3663178a49c5ed33cd0e4bbef4444c)), closes [#8](https://github.com/AsifArmanRahman/firebase-rest-api/issues/8)
+
+
+
 ## [1.8.1](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v1.8.0...v1.8.1) (2023-02-08)
 
 
