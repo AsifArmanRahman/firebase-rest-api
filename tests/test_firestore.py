@@ -66,7 +66,7 @@ class TestFirestoreAdmin:
 		assert ds_admin.collection('Marvels').document('Movies').collection('PhaseOne').order_by('year').limit_to_first(1).get() == [{'001': self.__class__.movies1}]
 
 	def test_collection_get_limit_to_last(self, ds_admin):
-		assert ds_admin.collection('Marvels').document('Movies').collection('PhaseOne').order_by('year').limit_to_last(1).get() == [{'001': self.__class__.movies1}]
+		assert ds_admin.collection('Marvels').document('Movies').collection('PhaseOne').order_by('year', direction='DESCENDING').limit_to_last(1).get() == [{'001': self.__class__.movies1}]
 
 	def test_collection_get_end_at(self, ds_admin):
 		assert ds_admin.collection('Marvels').document('Movies').collection('PhaseOne').order_by('year').end_at({'year': 2010}).get() == [{'001': self.__class__.movies1}]
