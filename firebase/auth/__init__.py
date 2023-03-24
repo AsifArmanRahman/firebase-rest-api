@@ -18,8 +18,8 @@ import pkce
 import random
 import datetime
 import python_jwt as jwt
-import jwcrypto.jwk as jwk
 from hashlib import sha256
+from jwcrypto.jwk import JWK
 from urllib.parse import parse_qs
 from google.auth.transport.requests import Request
 from cryptography.hazmat.primitives.serialization import Encoding, NoEncryption, PrivateFormat
@@ -209,7 +209,7 @@ class Auth:
 		"""
 
 		service_account_email = self.credentials.service_account_email
-		private_key = jwk.JWK.from_pem(self.credentials.signer._key.private_bytes(encoding=Encoding.PEM, format=PrivateFormat.PKCS8, encryption_algorithm=NoEncryption()))
+		private_key = JWK.from_pem(self.credentials.signer._key.private_bytes(encoding=Encoding.PEM, format=PrivateFormat.PKCS8, encryption_algorithm=NoEncryption()))
 
 		payload = {
 			"iss": service_account_email,
@@ -586,6 +586,32 @@ class Auth:
 		request_object = self.requests.post(request_ref, headers=headers, data=data)
 
 		raise_detailed_error(request_object)
+
+	def verify_id_token(self, id_token):
+		""" Decode Firebase Auth ID token.
+
+		| For more details:
+		| `Firebase Authentication | Verify ID tokens using a third-party JWT library`_
+
+		.. _Firebase Authentication | Verify ID tokens using a third-party JWT library: https://firebase.google.com/docs/auth/admin/verify-id-tokens#verify_id_tokens_using_a_third-party_jwt_library
+
+		:type id_token: str
+		:param id_token: A Firebase Auth ID token for the user.
+
+		:return: Decoded claims of Firebase Auth ID token.
+		:rtype: dict
+		"""
+
+		header, _ = jwt.process_jwt(id_token)
+
+		response = self.requests.get('https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com')
+
+		pub_pem = response.json()[header['kid']]
+
+		pub_key = JWK.from_pem(bytes(pub_pem.encode('utf-8')))
+		_, claims = jwt.verify_jwt(id_token, pub_key, [header['alg']], checks_optional=True)
+
+		return claims
 
 
 def _load_client_secret(secret):
