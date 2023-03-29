@@ -36,6 +36,8 @@ def _from_datastore(data):
 				for field_key, field_val in val['mapValue']['fields'].items():
 					dic[field_key] = _decode_datastore(field_val)
 
+			data_to_restructure[key] = dic
+
 		elif isinstance(val.get('arrayValue'), dict):
 			arr = []
 
