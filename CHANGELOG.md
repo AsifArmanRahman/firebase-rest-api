@@ -1,3 +1,12 @@
+## [1.10.1](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v1.10.0...v1.10.1) (2023-04-07)
+
+
+### Bug Fixes
+
+* unsupported error for empty string and dict ([bb84d9e](https://github.com/AsifArmanRahman/firebase-rest-api/commit/bb84d9e854fd8ca69b080666f1f76ae05e9b80a0)), closes [#11](https://github.com/AsifArmanRahman/firebase-rest-api/issues/11)
+
+
+
 # [1.10.0](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v1.9.0...v1.10.0) (2023-03-24)
 
 
