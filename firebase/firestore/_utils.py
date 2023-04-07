@@ -29,8 +29,12 @@ def _from_datastore(data):
 
 	for key, val in data_to_restructure.items():
 
-		if val.get('mapValue'):
-			data_to_restructure[key] = _from_datastore(val['mapValue'])
+		if isinstance(val.get('mapValue'), dict):
+
+			if val['mapValue'].get('fields', False):
+				data_to_restructure[key] = _from_datastore(val['mapValue'])
+			else:
+				data_to_restructure[key] = {}
 
 		elif isinstance(val.get('arrayValue'), dict):
 			arr = []
@@ -81,7 +85,7 @@ def _decode_datastore(value):
 	elif value.get('doubleValue'):
 		return float(value['doubleValue'])
 
-	elif value.get('stringValue'):
+	elif isinstance(value.get('stringValue'), str):
 		return str(value['stringValue'])
 
 	elif value.get('mapValue'):
