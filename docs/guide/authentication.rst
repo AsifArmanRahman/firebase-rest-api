@@ -229,7 +229,7 @@ with **Facebook** preset as the provider to use.
 
    # Example usage with Flask
    @auth.route('/login/facebook')
-   def login_google():
+   def login_facebook():
       return redirect(auth.authenticate_login_with_facebook())
 ..
 
