@@ -528,7 +528,7 @@ class Auth:
 		| For more details:
 		| `Firebase Auth REST API | section-change-email`_
 
-		.. _Firebase Auth REST API | section-change-password: https://firebase.google.com/docs/reference/rest/auth#section-change-email
+		.. _Firebase Auth REST API | section-change-email: https://firebase.google.com/docs/reference/rest/auth#section-change-email
 
 		:type id_token: str
 		:param id_token: A Firebase Auth ID token for the user.
