@@ -521,6 +521,62 @@ class Auth:
 			'type': 'id_token',
 			'value': request_object.json()['id_token'],
 		}
+	
+	def change_email(self, id_token, email):
+		""" Changes a user's email
+
+		| For more details:
+		| `Firebase Auth REST API | section-change-email`_
+
+		.. _Firebase Auth REST API | section-change-email: https://firebase.google.com/docs/reference/rest/auth#section-change-email
+
+		:type id_token: str
+		:param id_token: A Firebase Auth ID token for the user.
+
+		:type email: str
+		:param email: User's new email.
+
+		:return: UserInfo and Firebase Auth Tokens.
+		:rtype: dict
+		"""
+
+		request_ref = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/setAccountInfo?key={0}".format(self.api_key)
+
+		headers = {"content-type": "application/json; charset=UTF-8"}
+		data = json.dumps({"idToken": id_token, "email": email, "returnSecureToken": True})
+		request_object = self.requests.post(request_ref, headers=headers, data=data)
+
+		raise_detailed_error(request_object)
+
+		return request_object.json()
+	
+	def change_password(self, id_token, password):
+		""" Changes a user's password
+
+		| For more details:
+		| `Firebase Auth REST API | section-change-password`_
+
+		.. _Firebase Auth REST API | section-change-password: https://firebase.google.com/docs/reference/rest/auth#section-change-password
+
+		:type id_token: str
+		:param id_token: A Firebase Auth ID token for the user.
+
+		:type password: str
+		:param password: User's new password.
+
+		:return: UserInfo and Firebase Auth Tokens.
+		:rtype: dict
+		"""
+
+		request_ref = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/setAccountInfo?key={0}".format(self.api_key)
+
+		headers = {"content-type": "application/json; charset=UTF-8"}
+		data = json.dumps({"idToken": id_token, "password": password, "returnSecureToken": True})
+		request_object = self.requests.post(request_ref, headers=headers, data=data)
+
+		raise_detailed_error(request_object)
+
+		return request_object.json()
 
 	def update_profile(self, id_token, display_name=None, photo_url=None, delete_attribute=None):
 		""" Update a user's profile (display name / photo URL).

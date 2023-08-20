@@ -291,6 +291,32 @@ Update stored information or add information into the user's account.
 ..
 
 
+change_email
+--------------
+
+Change the email associated with the user's account.
+
+.. code-block:: python
+
+   # change user's email
+   auth.change_email(user['idToken'], email='iam@ironman.com')
+
+..
+
+
+change_password
+--------------
+
+Change the password associated with the user's account.
+
+.. code-block:: python
+
+   # change user's password
+   auth.change_password(user['idToken'], password='iLoveYou3000')
+
+..
+
+
 refresh
 -------
 
