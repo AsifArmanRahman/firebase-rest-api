@@ -9,6 +9,7 @@ class TestFirestoreAdmin:
 	movies1 = {
 		'name': 'Iron Man',
 		'lead': {'name': 'Robert Downey Jr.'},
+		'director': '',
 		'released': False,
 		'year': 2008,
 		'rating': 7.9,
@@ -101,6 +102,7 @@ class TestFirestoreAuth:
 	movies1 = {
 		'name': 'Dr. Strange',
 		'lead': {'name': 'Benedict Cumberbatch'},
+		'director': {},
 		'released': False,
 		'year': 2016,
 		'rating': 7.5,
