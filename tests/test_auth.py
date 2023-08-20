@@ -70,6 +70,32 @@ class TestAuth:
 	def test_verify_password_reset_code(self, auth):
 		assert auth.verify_password_reset_code('123456', 'NewTestPassword123')
 
+
+	def test_change_email(self, auth, email_2, password):
+		user = auth.change_email(self.__class__.user.get('idToken'), email_2)
+		self.__class__.user = None
+
+		assert user
+		assert self.__class__.user is None
+
+		user = auth.sign_in_with_email_and_password(email_2, password)
+		self.__class__.user = user
+
+		assert user
+		assert self.__class__.user.get('email') == email_2
+
+	def test_change_password(self, auth,email_2, password_2):
+		user = auth.change_password(self.__class__.user.get('idToken'), password_2)
+		self.__class__.user = None
+
+		assert user
+		assert self.__class__.user is None
+
+		user = auth.sign_in_with_email_and_password(email_2, password_2)
+		self.__class__.user = user
+
+		assert user
+
 	def test_update_profile_display_name(self, auth):
 		new_name = 'Test User'
 		user = auth.update_profile(self.__class__.user.get('idToken'), display_name=new_name)

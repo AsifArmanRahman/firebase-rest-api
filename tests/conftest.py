@@ -7,7 +7,10 @@
 import pytest
 
 from tests.tools import make_auth, make_db, make_ds, make_storage
-from tests.config import TEST_USER_EMAIL, TEST_USER_PASSWORD
+from tests.config import (
+	TEST_USER_EMAIL, TEST_USER_PASSWORD,
+	TEST_USER_EMAIL_2, TEST_USER_PASSWORD_2
+)
 
 
 @pytest.fixture(scope='session')
@@ -34,6 +37,9 @@ def db():
 def email():
 	return TEST_USER_EMAIL
 
+@pytest.fixture(scope='session')
+def email_2():
+	return TEST_USER_EMAIL_2
 
 @pytest.fixture(scope='session')
 def ds():
@@ -49,6 +55,9 @@ def ds_admin():
 def password():
 	return TEST_USER_PASSWORD
 
+@pytest.fixture(scope='session')
+def password_2():
+	return TEST_USER_PASSWORD_2
 
 @pytest.fixture(scope='session')
 def storage():
