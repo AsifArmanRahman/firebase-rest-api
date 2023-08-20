@@ -64,6 +64,9 @@ jobs:
                     TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
                     TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
 
+                    TEST_USER_EMAIL_2: ${{ secrets.TEST_USER_EMAIL_2 }}
+                    TEST_USER_PASSWORD_2: ${{ secrets.TEST_USER_PASSWORD_2 }}
+
             -   name: Upload coverage to Codecov
                 uses: codecov/codecov-action@v2
                 with:
