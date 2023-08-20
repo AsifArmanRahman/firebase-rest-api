@@ -14,6 +14,9 @@ jobs:
     github-release:
         runs-on: ubuntu-latest
 
+        # Workflow will run only if the trigger workflow completed with success.
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
         environment:
             name: Staging
 
