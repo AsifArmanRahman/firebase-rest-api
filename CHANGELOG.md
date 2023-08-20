@@ -1,3 +1,12 @@
+# [1.11.0](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v1.10.1...v1.11.0) (2023-08-20)
+
+
+### Features
+
+* add email and password change functionality ([2fb370f](https://github.com/AsifArmanRahman/firebase-rest-api/commit/2fb370f3e1d134c6aa0c10428c76fc4bd9d26128)), closes [#20](https://github.com/AsifArmanRahman/firebase-rest-api/issues/20)
+
+
+
 ## [1.10.1](https://github.com/AsifArmanRahman/firebase-rest-api/compare/v1.10.0...v1.10.1) (2023-04-07)
 
 
