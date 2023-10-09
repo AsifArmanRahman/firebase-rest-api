@@ -76,13 +76,13 @@ def _decode_datastore(value):
 	elif value.get('booleanValue') is not None:
 		return bool(value['booleanValue'])
 
-	elif value.get('bytesValue'):
+	elif value.get('bytesValue') is not None:
 		return b64decode(value['bytesValue'].encode('utf-8'))
 
-	elif value.get('integerValue'):
+	elif value.get('integerValue') is not None:
 		return int(value['integerValue'])
 
-	elif value.get('doubleValue'):
+	elif value.get('doubleValue') is not None:
 		return float(value['doubleValue'])
 
 	elif isinstance(value.get('stringValue'), str):
