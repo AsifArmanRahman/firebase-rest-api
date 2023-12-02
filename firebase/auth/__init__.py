@@ -114,6 +114,7 @@ class Auth:
 		self.__nonce = "".join(random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789") for _ in range(20))
 
 		if provider_id == 'google.com':
+            data['oauthScope'] = 'profile'
 			data['authFlowType'] = 'CODE_FLOW'
 			data['customParameter'] = {"access_type": 'offline', "prompt": 'select_account', "include_granted_scopes": 'true', "nonce": self.__nonce}
 
